@@ -1,9 +1,12 @@
 package control;
 
 import java.io.FileReader;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.Gson;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.Reader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ParametrosConexao {
 
@@ -37,25 +40,15 @@ public class ParametrosConexao {
     }
 
     public void lerArquivoConfiguracao() {
-        JSONObject jsonObject;
-        //Cria o parse de tratamento
-        JSONParser parser = new JSONParser();
-        //Variaveis que irao armazenar os dados do arquivo JSON        
 
+        Reader reader;        
         try {
-            //Salva no objeto JSONObject o que o parse tratou do arquivo
-            jsonObject = (JSONObject) parser.parse(new FileReader("servidor.json"));
-
-            //Salva nas variaveis os dados retirados do arquivo
-            this.SERVIDOR = (String) jsonObject.get("servidor");
-            this.PORTA = (String) jsonObject.get("porta");
-            this.USUARIO = (String) jsonObject.get("usuario");
-            this.SENHA = (String) jsonObject.get("senha");
-            this.DATABASE = (String) jsonObject.get("database");
-            
-        }
-        catch (Exception e) {
-            //
+            reader = new FileReader(new File(ClassLoader.getSystemResource("./arquivos/servidor.json").getFile()));
+            Gson gson = new Gson();
+            ParametrosConexao parametrosConexao = gson.fromJson(reader, ParametrosConexao.class);
+            setParametrosConexao(parametrosConexao.getSERVIDOR(), parametrosConexao.getPORTA(), parametrosConexao.getUSUARIO(), parametrosConexao.getSENHA(), parametrosConexao.getDATABASE());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ParametrosConexao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
