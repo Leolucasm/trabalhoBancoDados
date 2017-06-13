@@ -1,18 +1,25 @@
 package control;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class ParametrosConexao {
 
-    private final String SERVIDOR;
-    private final String PORTA;
-    private final String USUARIO;
-    private final String SENHA;
-    private final String DATABASE;
+    private String SERVIDOR;
+    private String PORTA;
+    private String USUARIO;
+    private String SENHA;
+    private String DATABASE;
+
+    public ParametrosConexao() {
+        this.SERVIDOR = null;
+        this.PORTA = null;
+        this.USUARIO = null;
+        this.SENHA = null;
+        this.DATABASE = null;
+    }
 
     /**
      * @param servidor Servidor onde está hospedado o banco de dados.
@@ -21,7 +28,7 @@ public class ParametrosConexao {
      * @param senha Senha de acesso ao banco de dados.
      * @param database Nome do banco de dados onde está hospedado o sistema.
      */
-    public ParametrosConexao(String servidor, String porta, String usuario, String senha, String database) {
+    public void setParametrosConexao(String servidor, String porta, String usuario, String senha, String database) {
         this.SERVIDOR = servidor;
         this.PORTA = porta;
         this.USUARIO = usuario;
@@ -29,33 +36,27 @@ public class ParametrosConexao {
         this.DATABASE = database;
     }
 
-    public ParametrosConexao() {
-        this.SERVIDOR = null;
-        this.PORTA = null;
-        this.USUARIO = null;
-        this.SENHA = null;
-        this.DATABASE = null;
-        
+    public void lerArquivoConfiguracao() {
+        JSONObject jsonObject;
+        //Cria o parse de tratamento
+        JSONParser parser = new JSONParser();
+        //Variaveis que irao armazenar os dados do arquivo JSON        
+
         try {
-            lerArquivoConfiguracao();
-        } catch (IOException ex) {
-            Logger.getLogger(ParametrosConexao.class.getName()).log(Level.SEVERE, null, ex);
+            //Salva no objeto JSONObject o que o parse tratou do arquivo
+            jsonObject = (JSONObject) parser.parse(new FileReader("servidor.json"));
+
+            //Salva nas variaveis os dados retirados do arquivo
+            this.SERVIDOR = (String) jsonObject.get("servidor");
+            this.PORTA = (String) jsonObject.get("porta");
+            this.USUARIO = (String) jsonObject.get("usuario");
+            this.SENHA = (String) jsonObject.get("senha");
+            this.DATABASE = (String) jsonObject.get("database");
+            
         }
-
-    }
-
-    private void lerArquivoConfiguracao() throws IOException {
-        FileReader arq = new FileReader(System.getProperty("user.dir") + "\\src\\arquivos\\servidor.ini");
-        BufferedReader lerArq = new BufferedReader(arq);
-
-        String linha = lerArq.readLine(); // lê a primeira linha
-        while (linha != null) {
-            System.out.printf("%s\n", linha);
-
-            linha = lerArq.readLine(); // lê da segunda até a última linha
+        catch (Exception e) {
+            //
         }
-
-        arq.close();
     }
 
     public String getSERVIDOR() {

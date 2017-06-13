@@ -9,9 +9,10 @@ public class TrabalhoM3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ParametrosConexao parametros = new ParametrosConexao();
-        GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados(parametros);
-        gerenciadorDeDados.conecta();
+        ParametrosConexao parametros = new ParametrosConexao();                
+        parametros.lerArquivoConfiguracao();        
+        GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados(parametros);        
+        gerenciadorDeDados.conecta();        
     }
     
 }

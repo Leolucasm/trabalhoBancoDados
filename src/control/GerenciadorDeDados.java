@@ -19,7 +19,7 @@ public class GerenciadorDeDados {
     public GerenciadorDeDados(ParametrosConexao parametros) {
         this.USUARIO = parametros.getUSUARIO();
         this.SENHA = parametros.getSENHA();
-        this.URL = "jdbc:postgressql://" + parametros.getSERVIDOR() + ":" + parametros.getPORTA() + "/" + parametros.getDATABASE();
+        this.URL = "jdbc:postgresql://" + parametros.getSERVIDOR() + ":" + parametros.getPORTA() + "/" + parametros.getDATABASE();
     }
 
     /**
@@ -35,6 +35,7 @@ public class GerenciadorDeDados {
 
     /**
      * @param comando SQL contendo o comando para ser executado.
+     * @throws java.sql.SQLException Erro ao executar comando
      */
     public void executar(String comando) throws SQLException {        
         conecta();

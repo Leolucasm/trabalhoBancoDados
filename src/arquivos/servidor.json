@@ -1,0 +1,7 @@
+{
+    "servidor": "5498465",
+    "porta": "5432",
+    "usuario": "postegres",
+    "senha": "123456",
+    "database": "teste"
+}
