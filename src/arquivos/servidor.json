@@ -3,5 +3,5 @@
     "PORTA": "5432",
     "USUARIO": "postgres",
     "SENHA": "123456",
-    "DATABASE": "testes"
+    "DATABASE": "mapaBordo"
 }

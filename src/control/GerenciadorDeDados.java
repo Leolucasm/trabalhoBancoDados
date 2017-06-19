@@ -2,15 +2,16 @@ package control;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class GerenciadorDeDados {
 
-    private final String URL;    
+    private final String URL;
     private final String USUARIO;
-    private final String SENHA;        
+    private final String SENHA;
     private Connection conexao;
 
     /**
@@ -26,23 +27,29 @@ public class GerenciadorDeDados {
      * @param comando SQL contendo o comando para ser executado.
      */
     public void executarComando(String comando) {
-        try {
-            executar(comando);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());            
-        }
-    }    
-
-    /**
-     * @param comando SQL contendo o comando para ser executado.
-     * @throws java.sql.SQLException Erro ao executar comando
-     */
-    public void executar(String comando) throws SQLException {        
         conecta();
-        Statement st = conexao.createStatement();
-        st.executeUpdate(comando);
+        executar(comando);
         desconecta();
     }
+
+    /**
+     * @param comando SQL contendo o comando para ser executado.     
+     */
+    public void executar(String comando) {
+        try {
+            Statement st = conexao.createStatement();
+            st.executeUpdate(comando);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
+        }
+    }
+    
+    public int getLastID(String comando) throws SQLException {        
+        Statement st = conexao.createStatement();        
+        ResultSet rs = st.executeQuery(comando);
+        rs.next();        
+        return rs.getInt("maxId"); 
+    }    
 
     public void conecta() {
         try {

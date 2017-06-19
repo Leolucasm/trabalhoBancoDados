@@ -1,6 +1,6 @@
 package model;
 
-import trabalhom3.TrabalhoM3;
+import view.TrabalhoM3;
 
 public class Embarcacao {
 
@@ -29,7 +29,7 @@ public class Embarcacao {
 
     public boolean save() throws Exception {
         if (valida()) {
-            TrabalhoM3.gerenciadorDeDados.executarComando("INSERT INTO embarcacao nome, tamanho values (" + this.nome + ", " + this.tamanho + ")");
+            TrabalhoM3.gerenciadorDeDados.executarComando("INSERT INTO embarcacao (nome, tamanho) values ('" + this.nome + "', " + this.tamanho + ")");
             return true;
         } else {
             throw new Exception("Pelo menos um dos campos obrigatórios não está preenchido, por favor verifique!");

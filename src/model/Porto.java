@@ -1,5 +1,7 @@
 package model;
 
+import view.TrabalhoM3;
+
 public class Porto {
 
     public enum tipo_administracao {
@@ -8,7 +10,7 @@ public class Porto {
 
     private String nome;
     private int ano_fundacao;
-    private tipo_administracao administracao;
+    private tipo_administracao administracao = null;
 
     public tipo_administracao getAdministracao() {
         return administracao;
@@ -35,11 +37,21 @@ public class Porto {
     }
 
     private boolean valida() {
+        if((nome.equals("")) || (ano_fundacao <= 0) || (administracao == null)){
+            return false;
+        }
         return true;
     }
 
     public boolean save() throws Exception {
         if (valida()) {
+            String campo_administracao = null;
+            if (administracao == tipo_administracao.publico){
+                campo_administracao = "PUB";
+            } else{
+                campo_administracao = "PRI";
+            }            
+            TrabalhoM3.gerenciadorDeDados.executarComando("INSERT INTO porto (nome, tipo_administracao, ano_fundacao) values ('" + this.nome + "', '" + campo_administracao + "', " + this.ano_fundacao +")");
             return true;
         } else {
             throw new Exception("Pelo menos um dos campos obrigatórios não está preenchido, por favor verifique!");
