@@ -11,7 +11,7 @@ public class TrabalhoM3 {
     public static void main(String[] args) {
         ParametrosConexao parametros = new ParametrosConexao();                
         parametros.lerArquivoConfiguracao();        
-        GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados(parametros);        
+        GerenciadorDeDados gerenciadorDeDados = new GerenciadorDeDados(parametros);
         gerenciadorDeDados.conecta();        
     }
     
