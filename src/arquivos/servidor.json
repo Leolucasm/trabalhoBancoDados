@@ -1,7 +1,7 @@
 {
-    "servidor": "5498465",
-    "porta": "5432",
-    "usuario": "postegres",
-    "senha": "123456",
-    "database": "teste"
+    "SERVIDOR": "localhost",
+    "PORTA": "5432",
+    "USUARIO": "postgres",
+    "SENHA": "123456",
+    "DATABASE": "mapaBordo"
 }
