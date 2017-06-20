@@ -3,12 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/model/Porto.java</file>
-            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/control/ParametrosConexao.java</file>
-            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/model/Embarcacao.java</file>
-            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/model/Especie.java</file>
-            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/model/Fotografia.java</file>
-            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/trabalhom3/TrabalhoM3.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/view/Principal.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/view/TrabalhoM3.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/view/CadastroEmbarcacao.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/control/Funcoes.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/control/GerenciadorDeDados.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/view/CadastroEspecie.java</file>
+            <file>file:/C:/Users/Rafael/Desktop/TrabalhoM3/src/view/ConsultaEmbarcacoes.java</file>
         </group>
     </open-files>
 </project-private>

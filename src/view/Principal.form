@@ -82,6 +82,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton5">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a8" green="d5" red="f0" type="rgb"/>
+            </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/arquivos/botaoRelatorios.png"/>
             </Property>

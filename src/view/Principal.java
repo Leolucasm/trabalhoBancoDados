@@ -21,7 +21,7 @@ public class Principal extends javax.swing.JFrame {
 
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);       
+        this.setIconImage(imagemTitulo);
 
         setExtendedState(MAXIMIZED_BOTH);
     }
@@ -74,6 +74,7 @@ public class Principal extends javax.swing.JFrame {
         jButton4.setText("Viagens");
         jPanel1.add(jButton4);
 
+        jButton5.setBackground(new java.awt.Color(240, 213, 168));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoRelatorios.png"))); // NOI18N
         jButton5.setText("Relatórios");
         jPanel1.add(jButton5);
@@ -104,8 +105,8 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        CadastroEmbarcacao cadastroEmbarcacao = new CadastroEmbarcacao();
-        cadastroEmbarcacao.show();
+        ConsultaEmbarcacoes consultaEmbarcacoes = new ConsultaEmbarcacoes();
+        consultaEmbarcacoes.show();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

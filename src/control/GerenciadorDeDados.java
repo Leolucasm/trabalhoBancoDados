@@ -22,6 +22,48 @@ public class GerenciadorDeDados {
         this.SENHA = parametros.getSENHA();
         this.URL = "jdbc:postgresql://" + parametros.getSERVIDOR() + ":" + parametros.getPORTA() + "/" + parametros.getDATABASE();
     }
+    
+    public String[][] getDadosTabela(String consulta) throws SQLException {  
+        conecta();
+        Statement st = conexao.createStatement();
+        ResultSet resultSet = st.executeQuery(consulta);
+        resultSet.last();
+        int linha = resultSet.getRow();
+        resultSet.beforeFirst();
+
+        int colunas = resultSet.getMetaData().getColumnCount();
+
+        String[][] dadosTabela;
+
+        if (linha > 0) {
+            dadosTabela = new String[linha][colunas];
+        } else {
+            dadosTabela = new String[1][colunas];
+        }
+
+        int i = 0;
+
+        while (resultSet.next()) {
+            for (int colun = 1; colun <= colunas; colun++) {
+                if (resultSet.getObject(colun) != null) {
+                    String valor = resultSet.getObject(colun).toString();
+                    dadosTabela[i][colun - 1] = valor;
+                } else {
+                    dadosTabela[i][colun - 1] = " ";
+                }
+            }
+            i++;
+        }
+
+        if (i == 0) {
+            for (int colun = 1; colun <= colunas; colun++) {
+                dadosTabela[i][colun - 1] = " ";
+            }
+        }
+
+        desconecta();
+        return dadosTabela;
+    }
 
     /**
      * @param comando SQL contendo o comando para ser executado.
