@@ -18,7 +18,7 @@ public class Funcoes {
         }
         return 0;
     }
-    
+
     public static DefaultTableModel getEmbarcacoes(String filtros) throws SQLException {
         String sql;
         String[] headers = {"Código", "Nome", "Tamanho"};
@@ -26,7 +26,7 @@ public class Funcoes {
 
         sql = "SELECT id, "
                 + "nome, "
-                + "tamanho "                
+                + "tamanho "
                 + "from "
                 + "embarcacao ";
 
@@ -41,8 +41,39 @@ public class Funcoes {
             }
         };
     }
-    
-    public static void excluirRegistro(String tabela, String id){
+
+    public static DefaultTableModel getPortos(String filtros) throws SQLException {
+        String sql;
+        String[] headers = {"Código", "Nome", "Administração"};
+        String[][] dados;
+
+        sql = "SELECT id, "
+                + "nome, "
+                + "administracao "
+                + "from "
+                + "porto ";
+
+        if (!filtros.equals("")) {
+            sql = sql + " WHERE " + filtros;
+        }
+        dados = gerenciadorDeDados.getDadosTabela(sql);
+
+        for (int i = 0; i < dados.length; i++) {
+            if (dados[i][2].equals("PUB")) {
+                dados[i][2] = "Pública";
+            } else {
+                dados[i][2] = "Privada";
+            }
+        }
+        DefaultTableModel model;
+        return new DefaultTableModel(dados, headers) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
+
+    public static void excluirRegistro(String tabela, String id) {
         gerenciadorDeDados.executarComando("delete from " + tabela + " where id = " + id);
     }
 }

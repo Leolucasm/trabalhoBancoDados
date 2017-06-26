@@ -1,11 +1,14 @@
 package view;
 
+import view.Embarcacao.ConsultaEmbarcacoes;
 import com.alee.laf.WebLookAndFeel;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import view.Porto.ConsultaPortos;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -22,7 +25,8 @@ public class Principal extends javax.swing.JFrame {
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
-
+        Image imagemTituloJanela = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/arquivos/PlanoFundo.jpg"));
+        jLabel1.setIcon(new ImageIcon(imagemTituloJanela.getScaledInstance(jPanel2.getWidth(), jPanel2.getHeight(), Image.SCALE_DEFAULT)));
         setExtendedState(MAXIMIZED_BOTH);
     }
 
@@ -56,6 +60,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoCadastrarPortos.png"))); // NOI18N
         jButton2.setText("Portos");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoCadastrarEmbarcacao.png"))); // NOI18N
@@ -85,19 +94,11 @@ public class Principal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/PlanoFundo.jpg"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 961, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 713, Short.MAX_VALUE)
-        );
+        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -108,6 +109,11 @@ public class Principal extends javax.swing.JFrame {
         ConsultaEmbarcacoes consultaEmbarcacoes = new ConsultaEmbarcacoes();
         consultaEmbarcacoes.show();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ConsultaPortos consultaPortos = new ConsultaPortos();
+        consultaPortos.show();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -51,7 +51,7 @@ public class Porto {
             } else{
                 campo_administracao = "PRI";
             }            
-            TrabalhoM3.gerenciadorDeDados.executarComando("INSERT INTO porto (nome, tipo_administracao, ano_fundacao) values ('" + this.nome + "', '" + campo_administracao + "', " + this.ano_fundacao +")");
+            TrabalhoM3.gerenciadorDeDados.executarComando("INSERT INTO porto (nome, administracao, ano_fundacao) values ('" + this.nome + "', '" + campo_administracao + "', " + this.ano_fundacao +")");
             return true;
         } else {
             throw new Exception("Pelo menos um dos campos obrigatórios não está preenchido, por favor verifique!");

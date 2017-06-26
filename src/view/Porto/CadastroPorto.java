@@ -1,26 +1,21 @@
-package view;
+package view.Porto;
 
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
-import model.Embarcacao;
+import model.Porto;
 
-public class CadastroEmbarcacao extends javax.swing.JFrame {
+public class CadastroPorto extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastroEmbarcacao
      */
-    public CadastroEmbarcacao() {
+    public CadastroPorto() {
         initComponents();                
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);
-        SpinnerNumberModel model = new SpinnerNumberModel(0.0, -1000.0, 1000.0, 0.1);        
-        jSpinnerTamanho.setModel(model);        
+        this.setIconImage(imagemTitulo);         
     }
 
     /**
@@ -36,19 +31,25 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
         jTextNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jSpinnerTamanho = new javax.swing.JSpinner();
+        jSpinnerAnoFundacao = new javax.swing.JSpinner();
+        jComboBoxAdministracao = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de Embarcação");
+        setTitle("Cadastro de Porto");
 
         jTextNome.setToolTipText("");
 
         jLabel1.setText("Nome");
 
-        jLabel2.setText("Tamanho");
+        jLabel2.setText("Ano de Fundação");
+
+        jComboBoxAdministracao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pública", "Privada" }));
+
+        jLabel3.setText("Administração");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -59,11 +60,13 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextNome)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jSpinnerTamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 243, Short.MAX_VALUE)))
+                            .addComponent(jSpinnerAnoFundacao, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(jLabel3)
+                            .addComponent(jComboBoxAdministracao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 254, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -73,16 +76,20 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(3, 3, 3)
                 .addComponent(jTextNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSpinnerTamanho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addComponent(jSpinnerAnoFundacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addGap(5, 5, 5)
+                .addComponent(jComboBoxAdministracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         btGravar.setText("Gravar");
         btGravar.addActionListener(new java.awt.event.ActionListener() {
@@ -104,12 +111,19 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         try {
-            Embarcacao embarcacao = new Embarcacao();
-            embarcacao.setNome(jTextNome.getText());
-            embarcacao.setTamanho((double) jSpinnerTamanho.getValue());
-            embarcacao.save();            
+            Porto porto = new Porto();
+            porto.setNome(jTextNome.getText());
+            porto.setAno_fundacao((int) jSpinnerAnoFundacao.getValue());
+            
+            if (jComboBoxAdministracao.getSelectedIndex() == 0){
+                porto.setAdministracao(Porto.tipo_administracao.publico);
+            }else {
+                porto.setAdministracao(Porto.tipo_administracao.privativo);
+            }
+            
+            porto.save();
             limparCampos();
-            JOptionPane.showMessageDialog(null, "Embarcação Cadastrada com sucesso!");
+            JOptionPane.showMessageDialog(null, "Porto cadastrado com sucesso!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
@@ -117,7 +131,8 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
 
     private void limparCampos(){
         jTextNome.setText("");
-        jSpinnerTamanho.setValue(0.0);
+        jSpinnerAnoFundacao.setValue(0.0);
+        jComboBoxAdministracao.setSelectedIndex(0);
     }
     
     /**
@@ -137,20 +152,23 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroEmbarcacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroPorto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroEmbarcacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroPorto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroEmbarcacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroPorto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroEmbarcacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroPorto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroEmbarcacao().setVisible(true);
+                new CadastroPorto().setVisible(true);
             }
         });
     }
@@ -158,11 +176,13 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btGravar;
+    private javax.swing.JComboBox<String> jComboBoxAdministracao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JSpinner jSpinnerTamanho;
+    private javax.swing.JSpinner jSpinnerAnoFundacao;
     private javax.swing.JTextField jTextNome;
     // End of variables declaration//GEN-END:variables
 }

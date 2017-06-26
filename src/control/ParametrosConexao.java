@@ -43,7 +43,7 @@ public class ParametrosConexao {
 
         Reader reader;        
         try {
-            reader = new FileReader(new File(ClassLoader.getSystemResource("./arquivos/servidor.json").getFile()));
+            reader = new FileReader(new File(this.getClass().getResource("/arquivos/servidor.json").getFile()));
             Gson gson = new Gson();
             ParametrosConexao parametrosConexao = gson.fromJson(reader, ParametrosConexao.class);
             setParametrosConexao(parametrosConexao.getSERVIDOR(), parametrosConexao.getPORTA(), parametrosConexao.getUSUARIO(), parametrosConexao.getSENHA(), parametrosConexao.getDATABASE());
