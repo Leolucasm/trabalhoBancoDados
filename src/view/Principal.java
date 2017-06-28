@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import view.Especie.ConsultaEspecie;
 import view.Porto.ConsultaPortos;
+import view.Viagem.ConsultaViagem;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -87,6 +88,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoCadastrarViagem.png"))); // NOI18N
         jButton4.setText("Viagens");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
 
         jButton5.setBackground(new java.awt.Color(240, 213, 168));
@@ -125,6 +131,11 @@ public class Principal extends javax.swing.JFrame {
         ConsultaEspecie consultaEspecie = new ConsultaEspecie();
         consultaEspecie.show();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        ConsultaViagem consultaViagem = new ConsultaViagem();
+        consultaViagem.show();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments

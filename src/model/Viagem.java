@@ -37,6 +37,10 @@ public class Viagem {
     public void inserirLances(Lance lance) {
         lances.add(lance);
     }
+    
+    public void removerLances(int lance){
+        lances.remove(lance);
+    }
 
     public Date getData_chegada() {
         return data_chegada;

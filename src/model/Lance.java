@@ -10,7 +10,7 @@ public class Lance {
     private Date data;
     private Time hora_inicial;
     private Time hora_final;
-    private double comprimmento_rede;
+    private double comprimento_rede;
     private double altura_rede;
     private double tamanho_malha;
     private double profundidade;
@@ -23,8 +23,8 @@ public class Lance {
         this.altura_rede = altura_rede;
     }
 
-    public void setComprimmento_rede(double comprimmento_rede) {
-        this.comprimmento_rede = comprimmento_rede;
+    public void setComprimento_rede(double comprimento_rede) {
+        this.comprimento_rede = comprimento_rede;
     }
 
     public void setData(Date data) {
@@ -63,8 +63,8 @@ public class Lance {
         return altura_rede;
     }
 
-    public double getComprimmento_rede() {
-        return comprimmento_rede;
+    public double getComprimento_rede() {
+        return comprimento_rede;
     }
 
     public Date getData() {
@@ -103,6 +103,14 @@ public class Lance {
         this.capturas.add(captura);
     }
     
+    public void removerCaptura(int captura){       
+        capturas.remove(captura);
+    }
+    
+    public int getQuantidadeCapturas(){
+        return capturas.size();
+    }
+    
     private boolean valida(){
         //Definir quais campos devem ser obrigatórios
         return true;
@@ -121,7 +129,7 @@ public class Lance {
         if (valida()) {                        
             TrabalhoM3.gerenciadorDeDados.executar("INSERT INTO viagem (data, hora_inicial, hora_final, comprimmento_rede, altura_rede, tamanho_malha, "
                     + "profundidade, latitude_inicial, longitude_inicial, viagem_id) "
-                    + "values ("+ data + "," + hora_inicial + "," + hora_final + "," + comprimmento_rede + "," + altura_rede + "," + tamanho_malha + "," 
+                    + "values ("+ data + "," + hora_inicial + "," + hora_final + "," + comprimento_rede + "," + altura_rede + "," + tamanho_malha + "," 
                     + profundidade + "," + latitude_inicial + "," + longitude_inicial + "," + viagem_id +")");        
             saveCapturas();
         } else {

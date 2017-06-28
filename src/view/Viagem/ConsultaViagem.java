@@ -177,8 +177,8 @@ public class ConsultaViagem extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncluirActionPerformed
-        CadastroViagem cadastroPorto = new CadastroViagem();
-        cadastroPorto.show();
+        CadastroViagem cadastroViagem = new CadastroViagem();
+        cadastroViagem.show();
     }//GEN-LAST:event_btIncluirActionPerformed
 
     private void realizarConsulta() {        

@@ -1,23 +1,33 @@
 package view.Viagem;
 
+import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
+import model.Lance;
 import model.Porto;
+import model.Viagem;
 
 public class CadastroViagem extends javax.swing.JFrame {
 
-    /**
-     * Creates new form CadastroEmbarcacao
-     */
+    Viagem viagem = new Viagem();
+
     public CadastroViagem() {
-        initComponents();                
+        initComponents();
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);                     
+        this.setIconImage(imagemTitulo);
+
+        montaCampos();
     }
 
     /**
@@ -31,21 +41,21 @@ public class CadastroViagem extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBoxEmbarcacao = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBoxPortoSaida = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBoxPortoChegada = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        jTextDataSaida = new javax.swing.JFormattedTextField();
+        jTextDataChegada = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableProdutos = new javax.swing.JTable();
+        jTableLances = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jButtonInserirFotografia = new javax.swing.JButton();
         jButtonRemoverFotografia = new javax.swing.JButton();
@@ -57,21 +67,21 @@ public class CadastroViagem extends javax.swing.JFrame {
 
         jLabel1.setText("Embarcação");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxEmbarcacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setText("Porto de Saída");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxPortoSaida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("Porto de Chegada");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxPortoChegada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Data de Saída");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        jTextDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        jTextDataChegada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
         jLabel7.setText("Data de Chegada");
 
@@ -81,59 +91,51 @@ public class CadastroViagem extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBoxEmbarcacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBoxPortoSaida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addGap(36, 36, 36))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jTextDataSaida, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 2, Short.MAX_VALUE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextDataChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7))))
+                        .addGap(0, 2, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxPortoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(135, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(26, 26, 26))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxEmbarcacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(26, 26, 26))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxPortoSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxPortoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextDataChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -158,19 +160,19 @@ public class CadastroViagem extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Lances"));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
+        jTableLances.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Fotografia"
+                "Data", "Hora Inicial", "Hora Final", "Capturas"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -181,12 +183,12 @@ public class CadastroViagem extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTableProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableLances.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableProdutosMouseClicked(evt);
+                jTableLancesMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTableProdutos);
+        jScrollPane1.setViewportView(jTableLances);
 
         jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -237,36 +239,97 @@ public class CadastroViagem extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         try {
-           
+            if(valida()){
+                
+            DefaultTableModel model = Funcoes.getPortos("nome = '" + jComboBoxPortoSaida.getItemAt(jComboBoxPortoSaida.getSelectedIndex()) + "'");
+            int porto_saida = (int) model.getValueAt(0, 0);
+            
+            model = Funcoes.getPortos("nome = '" + jComboBoxPortoChegada.getItemAt(jComboBoxPortoChegada.getSelectedIndex()) + "'");
+            int porto_chegada = (int) model.getValueAt(0, 0);
+            
+            model = Funcoes.getEmbarcacoes("nome = '" + jComboBoxEmbarcacao.getItemAt(jComboBoxEmbarcacao.getSelectedIndex()) + "'");
+            int embarcacao = (int) model.getValueAt(0, 0);
+            
+            viagem.setEmbarcacao_id(embarcacao);
+            viagem.setId_porto_saida(porto_saida);
+            viagem.setId_porto_chegada(porto_chegada);
+            viagem.setData_saida((Date) jTextDataSaida.getValue());
+            viagem.setData_chegada((Date) jTextDataChegada.getValue());
+            
+            viagem.save();
             limparCampos();
-            JOptionPane.showMessageDialog(null, "Porto cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Viagem cadastrada com sucesso!");
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private void jTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutosMouseClicked
+    private boolean valida(){
+        return true;
+    }
+    
+    private void jTableLancesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableLancesMouseClicked
 
         if (evt.getClickCount() == 2) {
             //
         }
-    }//GEN-LAST:event_jTableProdutosMouseClicked
+    }//GEN-LAST:event_jTableLancesMouseClicked
 
     private void jButtonInserirFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInserirFotografiaActionPerformed
-              //Insere na lista
-        DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();        
-        jTableProdutos.setModel(model);
+        CadastroLance cadastroLance = new CadastroLance();
+        cadastroLance.setVisible(true);
+
+        cadastroLance.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosed(WindowEvent we) {
+                Lance lance = cadastroLance.getLance();
+
+                if (lance.getAltura_rede() > 0) {
+                    viagem.inserirLances(lance);
+
+                    //Insere na lista
+                    DefaultTableModel model = (DefaultTableModel) jTableLances.getModel();
+                    model.addRow(new Object[]{lance.getData(), lance.getHora_inicial(), lance.getHora_final(), lance.getQuantidadeCapturas()});
+                    jTableLances.setModel(model);
+                }
+            }
+
+        });
     }//GEN-LAST:event_jButtonInserirFotografiaActionPerformed
 
     private void jButtonRemoverFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverFotografiaActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();
-        model.removeRow(jTableProdutos.getSelectedRow());
-        jTableProdutos.setModel(model);
+        DefaultTableModel model = (DefaultTableModel) jTableLances.getModel();
+        viagem.removerLances(jTableLances.getSelectedRow());
+        model.removeRow(jTableLances.getSelectedRow());
+        jTableLances.setModel(model);
     }//GEN-LAST:event_jButtonRemoverFotografiaActionPerformed
 
-    private void limparCampos(){        
+    private void montaCampos() {
+        try {
+            DefaultTableModel model_portos = Funcoes.getPortos("");
+            DefaultTableModel model_embarcacoes = Funcoes.getEmbarcacoes("");
+            jComboBoxEmbarcacao.removeAllItems();
+            jComboBoxPortoChegada.removeAllItems();
+            jComboBoxPortoSaida.removeAllItems();
+
+            for (int i = 0; i < model_embarcacoes.getRowCount(); i++) {
+                jComboBoxEmbarcacao.addItem((String) model_embarcacoes.getValueAt(i, 1));
+            }
+
+            for (int i = 0; i < model_portos.getRowCount(); i++) {
+                jComboBoxPortoSaida.addItem((String) model_portos.getValueAt(i, 1));
+                jComboBoxPortoChegada.addItem((String) model_portos.getValueAt(i, 1));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar as informações! \nVerifique: " + ex.getMessage());
+        }
     }
-    
+
+    private void limparCampos() {
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -322,11 +385,9 @@ public class CadastroViagem extends javax.swing.JFrame {
     private javax.swing.JButton btGravar;
     private javax.swing.JButton jButtonInserirFotografia;
     private javax.swing.JButton jButtonRemoverFotografia;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JComboBox<String> jComboBoxEmbarcacao;
+    private javax.swing.JComboBox<String> jComboBoxPortoChegada;
+    private javax.swing.JComboBox<String> jComboBoxPortoSaida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -337,6 +398,8 @@ public class CadastroViagem extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableProdutos;
+    private javax.swing.JTable jTableLances;
+    private javax.swing.JFormattedTextField jTextDataChegada;
+    private javax.swing.JFormattedTextField jTextDataSaida;
     // End of variables declaration//GEN-END:variables
 }
