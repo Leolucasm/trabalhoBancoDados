@@ -1,10 +1,15 @@
 package control;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 public class GerenciadorDeDados {
@@ -22,10 +27,10 @@ public class GerenciadorDeDados {
         this.SENHA = parametros.getSENHA();
         this.URL = "jdbc:postgresql://" + parametros.getSERVIDOR() + ":" + parametros.getPORTA() + "/" + parametros.getDATABASE();
     }
-    
-    public String[][] getDadosTabela(String consulta) throws SQLException {  
-        conecta();        
-        Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);                
+
+    public String[][] getDadosTabela(String consulta) throws SQLException {
+        conecta();
+        Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         ResultSet resultSet = st.executeQuery(consulta);
         resultSet.last();
         int linha = resultSet.getRow();
@@ -65,6 +70,20 @@ public class GerenciadorDeDados {
         return dadosTabela;
     }
 
+    public void insereFotografia(int id_especie, String caminho_fotografia) throws SQLException, Exception {        
+        PreparedStatement st = conexao.prepareStatement("insert into fotografia (foto, especie_id) values (?, ?)");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferedImage imagem = ImageIO.read(new File(caminho_fotografia));
+        ImageIO.write((BufferedImage) imagem, "png", baos);
+        baos.flush();
+        byte[] byteArray = baos.toByteArray();
+        baos.close();
+        st.setBytes(1, byteArray);
+        st.setInt(2, id_especie);
+        st.executeUpdate();
+        st.close();        
+    }
+
     /**
      * @param comando SQL contendo o comando para ser executado.
      */
@@ -75,7 +94,7 @@ public class GerenciadorDeDados {
     }
 
     /**
-     * @param comando SQL contendo o comando para ser executado.     
+     * @param comando SQL contendo o comando para ser executado.
      */
     public void executar(String comando) {
         try {
@@ -85,13 +104,13 @@ public class GerenciadorDeDados {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
     }
-    
-    public int getLastID(String comando) throws SQLException {        
-        Statement st = conexao.createStatement();        
+
+    public int getLastID(String comando) throws SQLException {
+        Statement st = conexao.createStatement();
         ResultSet rs = st.executeQuery(comando);
-        rs.next();        
-        return rs.getInt("maxId"); 
-    }    
+        rs.next();
+        return rs.getInt("maxId");
+    }
 
     public void conecta() {
         try {

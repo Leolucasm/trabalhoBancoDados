@@ -41,6 +41,30 @@ public class Funcoes {
             }
         };
     }
+    
+    public static DefaultTableModel getEspecies(String filtros) throws SQLException {
+        String sql;
+        String[] headers = {"Código", "Nome", "Profundidade Mínima", "Profundidade Máxima"};
+        String[][] dados;
+
+        sql = "SELECT id, "
+                + "nome, "
+                + "profundidade_minima, "
+                + "profundidade_maxima "
+                + "from "
+                + "especie ";
+
+        if (!filtros.equals("")) {
+            sql = sql + " WHERE " + filtros;
+        }
+        dados = gerenciadorDeDados.getDadosTabela(sql);
+        DefaultTableModel model;
+        return new DefaultTableModel(dados, headers) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
 
     public static DefaultTableModel getPortos(String filtros) throws SQLException {
         String sql;

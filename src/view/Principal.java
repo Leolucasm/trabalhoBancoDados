@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import view.Especie.ConsultaEspecie;
 import view.Porto.ConsultaPortos;
 
 public class Principal extends javax.swing.JFrame {
@@ -56,6 +57,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoCadastrarEspecies.png"))); // NOI18N
         jButton1.setText("Espécies");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoCadastrarPortos.png"))); // NOI18N
@@ -114,6 +120,11 @@ public class Principal extends javax.swing.JFrame {
         ConsultaPortos consultaPortos = new ConsultaPortos();
         consultaPortos.show();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ConsultaEspecie consultaEspecie = new ConsultaEspecie();
+        consultaEspecie.show();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -19,7 +19,7 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
-        SpinnerNumberModel model = new SpinnerNumberModel(0.0, -1000.0, 1000.0, 0.1);        
+        SpinnerNumberModel model = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1);        
         jSpinnerTamanho.setModel(model);        
     }
 

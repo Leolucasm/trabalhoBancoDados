@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 import model.Porto;
 
 public class CadastroPorto extends javax.swing.JFrame {
@@ -15,7 +16,10 @@ public class CadastroPorto extends javax.swing.JFrame {
         initComponents();                
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);         
+        this.setIconImage(imagemTitulo);     
+        
+        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 99999, 1);        
+        jSpinnerAnoFundacao.setModel(model); 
     }
 
     /**

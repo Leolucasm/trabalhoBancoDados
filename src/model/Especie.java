@@ -43,17 +43,12 @@ public class Especie {
         fotografias.add(fotografia);
     }
     
-    private String getSQLFotografias(){        
-        String sql;
+    private void inserirFotografias() throws Exception{                
         int especie_id = Funcoes.getLastID("especie");
-        
-        sql = "INSERT INTO fotografia (nome_arquivo, especie_id) values ";
+                
         for (Fotografia fotografia : fotografias) {
-            sql = sql + "('" +fotografia.getNome_arquivo() + "', " + especie_id + "), ";
-        }                
-        
-        sql = sql.substring(0, sql.length()-2) + ";";
-        return sql;
+            TrabalhoM3.gerenciadorDeDados.insereFotografia(especie_id, fotografia.getNome_arquivo());
+        }                                
     }
 
     private boolean valida() {
@@ -67,7 +62,7 @@ public class Especie {
             TrabalhoM3.gerenciadorDeDados.executar("BEGIN");
             TrabalhoM3.gerenciadorDeDados.executar("INSERT INTO especie (nome, profundidade_minima, profundidade_maxima) "
                     + "values ('" + this.nome + "', " + this.profundidade_minima + ", " + this.profundidade_maxima + ") ");  
-            TrabalhoM3.gerenciadorDeDados.executar(getSQLFotografias());
+            inserirFotografias();
             TrabalhoM3.gerenciadorDeDados.executar("COMMIT");
             TrabalhoM3.gerenciadorDeDados.desconecta();
             return true;
