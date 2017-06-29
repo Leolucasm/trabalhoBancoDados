@@ -1,18 +1,18 @@
 package view.Viagem;
 
+import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.Time;
-import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.Captura;
 import model.Lance;
-import model.Porto;
 
 public class CadastroLance extends javax.swing.JFrame {
 
@@ -22,9 +22,7 @@ public class CadastroLance extends javax.swing.JFrame {
         initComponents();
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);
-        
-        montaCampos();
+        this.setIconImage(imagemTitulo);        
     }
 
     /**
@@ -43,18 +41,18 @@ public class CadastroLance extends javax.swing.JFrame {
         jTextHoraInicial = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
         jTextHoraFinal = new javax.swing.JFormattedTextField();
-        jSpinnerLatitudeInicial = new javax.swing.JSpinner();
-        jSpinnerLongitudeInicial = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jSpinnerProfundidade = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
-        jSpinnerComprimentoRede = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jSpinnerAlturaRede = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
-        jSpinnerTamanhoMalha = new javax.swing.JSpinner();
+        jTextLatitudeInicial = new javax.swing.JFormattedTextField();
+        jTextLongitudeInicial = new javax.swing.JFormattedTextField();
+        jTextProfundidade = new javax.swing.JFormattedTextField();
+        jTextComprimentoRede = new javax.swing.JFormattedTextField();
+        jTextAlturaRede = new javax.swing.JFormattedTextField();
+        jTextTamanhoMalha = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -66,7 +64,7 @@ public class CadastroLance extends javax.swing.JFrame {
         jButtonRemoverCaptura = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de Porto");
+        setTitle("Cadastro de Lance");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações Gerais"));
         jPanel1.setMaximumSize(new java.awt.Dimension(763, 210));
@@ -74,15 +72,27 @@ public class CadastroLance extends javax.swing.JFrame {
 
         jLabel6.setText("Data");
 
-        jTextData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        try {
+            jTextData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jLabel8.setText("Hora Inicial");
 
-        jTextHoraInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
+        try {
+            jTextHoraInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jLabel9.setText("Hora Final");
 
-        jTextHoraFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
+        try {
+            jTextHoraFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jLabel1.setText("Latitude Inicial");
 
@@ -96,6 +106,24 @@ public class CadastroLance extends javax.swing.JFrame {
 
         jLabel7.setText("Tamanho da Malha");
 
+        jTextLatitudeInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextLatitudeInicial.setText("0");
+
+        jTextLongitudeInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextLongitudeInicial.setText("0");
+
+        jTextProfundidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextProfundidade.setText("0");
+
+        jTextComprimentoRede.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextComprimentoRede.setText("0");
+
+        jTextAlturaRede.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextAlturaRede.setText("0");
+
+        jTextTamanhoMalha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextTamanhoMalha.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -104,45 +132,43 @@ public class CadastroLance extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinnerComprimentoRede, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextComprimentoRede, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinnerAlturaRede, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
+                        .addComponent(jTextAlturaRede, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jSpinnerTamanhoMalha)))
+                        .addComponent(jTextTamanhoMalha, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinnerLatitudeInicial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinnerLongitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jSpinnerProfundidade)))
+                        .addComponent(jLabel4)
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel5)
+                        .addGap(66, 66, 66)
+                        .addComponent(jLabel7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jTextData, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel2)
+                        .addGap(61, 61, 61)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextHoraInicial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextLatitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextLongitudeInicial))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jTextData, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextHoraInicial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel9)
-                            .addComponent(jTextHoraFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(345, 345, 345))
+                            .addComponent(jTextHoraFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(jTextProfundidade))))
+                .addContainerGap(345, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,35 +189,29 @@ public class CadastroLance extends javax.swing.JFrame {
                         .addComponent(jTextHoraInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(46, 46, 46))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(4, 4, 4))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jSpinnerLatitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinnerLongitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinnerProfundidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(20, 20, 20)
+                            .addComponent(jTextLatitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextLongitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextProfundidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(4, 4, 4)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jSpinnerComprimentoRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jSpinnerAlturaRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jSpinnerTamanhoMalha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(20, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextComprimentoRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextAlturaRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextTamanhoMalha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -208,6 +228,11 @@ public class CadastroLance extends javax.swing.JFrame {
 
         btCancelar.setText("Cancelar");
         btCancelar.setToolTipText("");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btCancelar);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -281,7 +306,7 @@ public class CadastroLance extends javax.swing.JFrame {
                 .addComponent(jButtonInserirCaptura)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonRemoverCaptura)
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.WEST);
@@ -294,41 +319,52 @@ public class CadastroLance extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         if (valida()) {
-            lance.setData((Date) jTextData.getValue());
-            lance.setHora_inicial((Time) jTextHoraInicial.getValue());
-            lance.setHora_final((Time) jTextHoraFinal.getValue());
-            lance.setLatitude_inicial((double) jSpinnerLatitudeInicial.getValue());
-            lance.setLongitude_inicial((double) jSpinnerLongitudeInicial.getValue());
-            lance.setProfundidade((double) jSpinnerProfundidade.getValue());
-            lance.setComprimento_rede((double) jSpinnerComprimentoRede.getValue());
-            lance.setAltura_rede((double) jSpinnerAlturaRede.getValue());
-            lance.setTamanho_malha((double) jSpinnerTamanhoMalha.getValue());
-            
-            dispose();
+            try {
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                java.util.Date data_formatada;
+                
+                //Formata data
+                data_formatada = formato.parse(jTextData.getText());
+                java.sql.Date sql = new java.sql.Date(data_formatada.getTime());
+
+                //Formata hora
+                formato = new SimpleDateFormat("HH:mm");
+                java.util.Date hora = formato.parse(jTextHoraInicial.getText());
+                java.sql.Time hora_inicial = new java.sql.Time(hora.getTime());
+                
+                hora = formato.parse(jTextHoraInicial.getText());
+                java.sql.Time hora_final = new java.sql.Time(hora.getTime());
+                
+                //Formata casas decimais
+                String latitude = Funcoes.formatarDouble(jTextLatitudeInicial.getText());
+                String longitude = Funcoes.formatarDouble(jTextLongitudeInicial.getText());
+                String profundidade = Funcoes.formatarDouble(jTextProfundidade.getText());
+                String comprimento_rede = Funcoes.formatarDouble(jTextComprimentoRede.getText());
+                String altura_rede = Funcoes.formatarDouble(jTextAlturaRede.getText());
+                String tamanho_malha = Funcoes.formatarDouble(jTextTamanhoMalha.getText());
+                
+                lance.setData(sql);
+                lance.setHora_inicial(hora_inicial);
+                lance.setHora_final(hora_final);
+                lance.setLatitude_inicial(Double.parseDouble(latitude));
+                lance.setLongitude_inicial(Double.parseDouble(longitude));
+                lance.setProfundidade(Double.parseDouble(profundidade));
+                lance.setComprimento_rede(Double.parseDouble(comprimento_rede));
+                lance.setAltura_rede(Double.parseDouble(altura_rede));
+                lance.setTamanho_malha(Double.parseDouble(tamanho_malha));
+
+                dispose();
+            } catch (ParseException ex) {
+                Logger.getLogger(CadastroLance.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private void montaCampos(){
-        SpinnerNumberModel latitude = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1);        
-        SpinnerNumberModel longitude = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1); 
-        SpinnerNumberModel profundidade = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1); 
-        SpinnerNumberModel comprimento_rede = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1); 
-        SpinnerNumberModel altura_rede = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1); 
-        SpinnerNumberModel tamanho_malha = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1); 
-        
-        jSpinnerLatitudeInicial.setModel(latitude);
-        jSpinnerLongitudeInicial.setModel(longitude);         
-        jSpinnerProfundidade.setModel(profundidade);
-        jSpinnerComprimentoRede.setModel(comprimento_rede);
-        jSpinnerAlturaRede.setModel(altura_rede);
-        jSpinnerTamanhoMalha.setModel(tamanho_malha);
-    }
-    
     private boolean valida() {
         return true;
     }
-    
-    public Lance getLance(){
+
+    public Lance getLance() {
         return this.lance;
     }
 
@@ -367,10 +403,10 @@ public class CadastroLance extends javax.swing.JFrame {
         jTableCapturas.setModel(model);
     }//GEN-LAST:event_jButtonRemoverCapturaActionPerformed
 
-    private void limparCampos() {
-
-    }
-
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
+   
     /**
      * @param args the command line arguments
      */
@@ -456,15 +492,15 @@ public class CadastroLance extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinnerAlturaRede;
-    private javax.swing.JSpinner jSpinnerComprimentoRede;
-    private javax.swing.JSpinner jSpinnerLatitudeInicial;
-    private javax.swing.JSpinner jSpinnerLongitudeInicial;
-    private javax.swing.JSpinner jSpinnerProfundidade;
-    private javax.swing.JSpinner jSpinnerTamanhoMalha;
     private javax.swing.JTable jTableCapturas;
+    private javax.swing.JFormattedTextField jTextAlturaRede;
+    private javax.swing.JFormattedTextField jTextComprimentoRede;
     private javax.swing.JFormattedTextField jTextData;
     private javax.swing.JFormattedTextField jTextHoraFinal;
     private javax.swing.JFormattedTextField jTextHoraInicial;
+    private javax.swing.JFormattedTextField jTextLatitudeInicial;
+    private javax.swing.JFormattedTextField jTextLongitudeInicial;
+    private javax.swing.JFormattedTextField jTextProfundidade;
+    private javax.swing.JFormattedTextField jTextTamanhoMalha;
     // End of variables declaration//GEN-END:variables
 }

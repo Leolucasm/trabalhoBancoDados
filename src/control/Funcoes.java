@@ -41,7 +41,7 @@ public class Funcoes {
             }
         };
     }
-    
+
     public static DefaultTableModel getEspecies(String filtros) throws SQLException {
         String sql;
         String[] headers = {"Código", "Nome", "Profundidade Mínima", "Profundidade Máxima"};
@@ -99,5 +99,11 @@ public class Funcoes {
 
     public static void excluirRegistro(String tabela, String id) {
         gerenciadorDeDados.executarComando("delete from " + tabela + " where id = " + id);
+    }
+
+    public static String formatarDouble(String valor) {
+        valor = valor.replace(".", "");
+        valor = valor.replace(",", ".");
+        return valor;
     }
 }

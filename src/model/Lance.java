@@ -127,9 +127,9 @@ public class Lance {
         setViagem_id(viagem);        
 
         if (valida()) {                        
-            TrabalhoM3.gerenciadorDeDados.executar("INSERT INTO viagem (data, hora_inicial, hora_final, comprimmento_rede, altura_rede, tamanho_malha, "
+            TrabalhoM3.gerenciadorDeDados.executar("INSERT INTO lance (data, hora_inicial, hora_final, comprimento_rede, altura_rede, tamanho_malha, "
                     + "profundidade, latitude_inicial, longitude_inicial, viagem_id) "
-                    + "values ("+ data + "," + hora_inicial + "," + hora_final + "," + comprimento_rede + "," + altura_rede + "," + tamanho_malha + "," 
+                    + "values ('"+ data + "','" + hora_inicial + "','" + hora_final + "'," + comprimento_rede + "," + altura_rede + "," + tamanho_malha + "," 
                     + profundidade + "," + latitude_inicial + "," + longitude_inicial + "," + viagem_id +")");        
             saveCapturas();
         } else {

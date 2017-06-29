@@ -5,26 +5,20 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import model.Captura;
 
 public class CadastroCaptura extends javax.swing.JFrame {
-    
+
     Captura captura = new Captura();
-    
+
     public CadastroCaptura() {
-        initComponents();                
+        initComponents();
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);     
-        
-        SpinnerNumberModel model = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1);       
-        jSpinnerPeso.setModel(model); 
-        
+        this.setIconImage(imagemTitulo);
+
         montarCampos();
     }
 
@@ -40,8 +34,8 @@ public class CadastroCaptura extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jSpinnerPeso = new javax.swing.JSpinner();
         jComboBoxEspecie = new javax.swing.JComboBox<>();
+        jTextPeso = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -55,18 +49,19 @@ public class CadastroCaptura extends javax.swing.JFrame {
 
         jComboBoxEspecie.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jTextPeso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2)
-                        .addComponent(jSpinnerPeso)
-                        .addComponent(jComboBoxEspecie, 0, 168, Short.MAX_VALUE))
-                    .addComponent(jLabel1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxEspecie, 0, 168, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextPeso))
                 .addContainerGap(232, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -78,9 +73,9 @@ public class CadastroCaptura extends javax.swing.JFrame {
                 .addComponent(jComboBoxEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(3, 3, 3)
-                .addComponent(jSpinnerPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -97,6 +92,11 @@ public class CadastroCaptura extends javax.swing.JFrame {
 
         btCancelar.setText("Cancelar");
         btCancelar.setToolTipText("");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btCancelar);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -106,42 +106,62 @@ public class CadastroCaptura extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
-        try {            
-            DefaultTableModel model = Funcoes.getEspecies("nome = '" + jComboBoxEspecie.getItemAt(jComboBoxEspecie.getSelectedIndex()) + "'");
-            int id_especie = Integer.parseInt((String) model.getValueAt(0, 0));
-                        
-            captura.setEspecie_id(id_especie);
-            captura.setPeso((double) jSpinnerPeso.getValue());
-            dispose();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao carregar as informações! \nVerifique: " + ex.getMessage());
+        try {
+            if (jTextPeso.getText().equals("")){
+                jTextPeso.setText("0");
+            }
+            
+            if (valida()) {
+                DefaultTableModel model = Funcoes.getEspecies("nome = '" + jComboBoxEspecie.getItemAt(jComboBoxEspecie.getSelectedIndex()) + "'");
+                int id_especie = Integer.parseInt((String) model.getValueAt(0, 0));
+
+                String peso = Funcoes.formatarDouble(jTextPeso.getText());
+
+                captura.setEspecie_id(id_especie);
+                captura.setPeso(Double.parseDouble(peso));
+                dispose();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao gravar a captura! \nVerifique: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
-    
-    
-    private void montarCampos(){
+
+    private boolean valida() throws Exception {        
+        String peso = Funcoes.formatarDouble(jTextPeso.getText());
+        if (Double.parseDouble(peso) > 0) {
+            return true;
+        } else {
+            throw new Exception("O peso deve ser maior que zero.");
+        }
+    }
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void montarCampos() {
         try {
             DefaultTableModel model = Funcoes.getEspecies("");
-            
-             jComboBoxEspecie.removeAllItems();
+
+            jComboBoxEspecie.removeAllItems();
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 jComboBoxEspecie.addItem((String) model.getValueAt(i, 1));
             }
-            
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar as informações! \nVerifique: " + ex.getMessage());
         }
     }
-    
-    public Captura getCaptura(){
+
+    public Captura getCaptura() {
         return this.captura;
     }
-    
-    public String getEspecie(){
+
+    public String getEspecie() {
         return this.jComboBoxEspecie.getItemAt(jComboBoxEspecie.getSelectedIndex());
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -192,6 +212,6 @@ public class CadastroCaptura extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JSpinner jSpinnerPeso;
+    private javax.swing.JFormattedTextField jTextPeso;
     // End of variables declaration//GEN-END:variables
 }

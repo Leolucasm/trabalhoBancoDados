@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -61,7 +62,7 @@ public class CadastroViagem extends javax.swing.JFrame {
         jButtonRemoverFotografia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de Porto");
+        setTitle("Cadastro de Viagem");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações Gerais"));
 
@@ -79,9 +80,18 @@ public class CadastroViagem extends javax.swing.JFrame {
 
         jLabel6.setText("Data de Saída");
 
-        jTextDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        try {
+            jTextDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jTextDataSaida.setToolTipText("");
 
-        jTextDataChegada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        try {
+            jTextDataChegada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jLabel7.setText("Data de Chegada");
 
@@ -239,36 +249,54 @@ public class CadastroViagem extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         try {
-            if(valida()){
+            if (valida()) {
+
+                /*--------------------------------------------------------------
+                                Pegando o id dos campos                
+                --------------------------------------------------------------*/
+                DefaultTableModel model = Funcoes.getPortos("nome = '" + jComboBoxPortoSaida.getItemAt(jComboBoxPortoSaida.getSelectedIndex()) + "'");
+                int porto_saida = Integer.parseInt((String) model.getValueAt(0, 0));
+
+                model = Funcoes.getPortos("nome = '" + jComboBoxPortoChegada.getItemAt(jComboBoxPortoChegada.getSelectedIndex()) + "'");
+                int porto_chegada = Integer.parseInt((String) model.getValueAt(0, 0));
+
+                model = Funcoes.getEmbarcacoes("nome = '" + jComboBoxEmbarcacao.getItemAt(jComboBoxEmbarcacao.getSelectedIndex()) + "'");
+                int embarcacao = Integer.parseInt((String) model.getValueAt(0, 0));
                 
-            DefaultTableModel model = Funcoes.getPortos("nome = '" + jComboBoxPortoSaida.getItemAt(jComboBoxPortoSaida.getSelectedIndex()) + "'");
-            int porto_saida = (int) model.getValueAt(0, 0);
-            
-            model = Funcoes.getPortos("nome = '" + jComboBoxPortoChegada.getItemAt(jComboBoxPortoChegada.getSelectedIndex()) + "'");
-            int porto_chegada = (int) model.getValueAt(0, 0);
-            
-            model = Funcoes.getEmbarcacoes("nome = '" + jComboBoxEmbarcacao.getItemAt(jComboBoxEmbarcacao.getSelectedIndex()) + "'");
-            int embarcacao = (int) model.getValueAt(0, 0);
-            
-            viagem.setEmbarcacao_id(embarcacao);
-            viagem.setId_porto_saida(porto_saida);
-            viagem.setId_porto_chegada(porto_chegada);
-            viagem.setData_saida((Date) jTextDataSaida.getValue());
-            viagem.setData_chegada((Date) jTextDataChegada.getValue());
-            
-            viagem.save();
-            limparCampos();
-            JOptionPane.showMessageDialog(null, "Viagem cadastrada com sucesso!");
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                java.util.Date data_formatada;
+                
+                
+                /*--------------------------------------------------------------
+                                Formatando as Datas
+                --------------------------------------------------------------*/
+                
+                data_formatada = formato.parse(jTextDataSaida.getText());
+                java.sql.Date data_saida = new java.sql.Date(data_formatada.getTime());
+                
+                data_formatada = formato.parse(jTextDataChegada.getText());
+                java.sql.Date data_chegada = new java.sql.Date(data_formatada.getTime());                                
+                
+
+                viagem.setEmbarcacao_id(embarcacao);
+                viagem.setId_porto_saida(porto_saida);
+                viagem.setId_porto_chegada(porto_chegada);
+                viagem.setData_saida(data_saida);
+                viagem.setData_chegada(data_chegada);
+
+                viagem.save();
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Viagem cadastrada com sucesso!");
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private boolean valida(){
+    private boolean valida() {
         return true;
     }
-    
+
     private void jTableLancesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableLancesMouseClicked
 
         if (evt.getClickCount() == 2) {

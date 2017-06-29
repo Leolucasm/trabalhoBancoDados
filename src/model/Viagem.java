@@ -79,7 +79,7 @@ public class Viagem {
             TrabalhoM3.gerenciadorDeDados.conecta();
             TrabalhoM3.gerenciadorDeDados.executar("BEGIN");            
             TrabalhoM3.gerenciadorDeDados.executar("insert into viagem (data_saida, data_chegada, embarcacao_id, id_porto_saida, id_porto_chegada) "
-                    + "values (" + data_saida + "," + data_chegada + "," + embarcacao_id + "," + id_porto_saida + "," + id_porto_chegada + ")"); //Insere a viagem
+                    + "values ('" + data_saida + "','" + data_chegada + "'," + embarcacao_id + "," + id_porto_saida + "," + id_porto_chegada + ")"); //Insere a viagem
             saveLances();
             TrabalhoM3.gerenciadorDeDados.executar("COMMIT");
             TrabalhoM3.gerenciadorDeDados.desconecta();
