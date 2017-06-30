@@ -6,10 +6,10 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableModel;
 import model.Captura;
 import model.Lance;
@@ -17,12 +17,35 @@ import model.Lance;
 public class CadastroLance extends javax.swing.JFrame {
 
     Lance lance = new Lance();
+    java.util.Date data_saida_viagem;
+    java.util.Date data_chegada_viagem;
 
-    public CadastroLance() {
+    public CadastroLance(java.util.Date data_saida, java.util.Date data_chegada) {
         initComponents();
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);        
+        this.setIconImage(imagemTitulo);
+        this.data_saida_viagem = data_saida;
+        this.data_chegada_viagem = data_chegada;
+        montaCampos();
+    }
+
+    private void montaCampos() {
+        JSpinner.DateEditor data_editor = new JSpinner.DateEditor(jTextData, "dd/MM/yyyy");
+        jTextData.setEditor(data_editor);
+
+        JSpinner.DateEditor hora_inicial_editor = new JSpinner.DateEditor(jTextHoraInicial, "HH:mm");
+        jTextHoraInicial.setEditor(hora_inicial_editor);
+
+        JSpinner.DateEditor hora_final_editor = new JSpinner.DateEditor(jTextHoraFinal, "HH:mm");
+        jTextHoraFinal.setEditor(hora_final_editor);
+
+        jTextLatitudeInicial.setValue(0.00000);
+        jTextLongitudeInicial.setValue(0.00000);
+        jTextProfundidade.setValue(0.00000);
+        jTextAlturaRede.setValue(0.00000);
+        jTextComprimentoRede.setValue(0.00000);
+        jTextTamanhoMalha.setValue(0.00000);
     }
 
     /**
@@ -33,26 +56,28 @@ public class CadastroLance extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextData = new javax.swing.JFormattedTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTextHoraInicial = new javax.swing.JFormattedTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jTextHoraFinal = new javax.swing.JFormattedTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextLatitudeInicial = new javax.swing.JFormattedTextField();
-        jTextLongitudeInicial = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextHoraFinal = new javax.swing.JSpinner();
         jTextProfundidade = new javax.swing.JFormattedTextField();
-        jTextComprimentoRede = new javax.swing.JFormattedTextField();
-        jTextAlturaRede = new javax.swing.JFormattedTextField();
         jTextTamanhoMalha = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextAlturaRede = new javax.swing.JFormattedTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTextLongitudeInicial = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextHoraInicial = new javax.swing.JSpinner();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextData = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
+        jTextLatitudeInicial = new javax.swing.JFormattedTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jTextComprimentoRede = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -65,154 +90,204 @@ public class CadastroLance extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Lance");
+        setMaximumSize(new java.awt.Dimension(807, 707));
+        setMinimumSize(new java.awt.Dimension(807, 707));
+        setPreferredSize(new java.awt.Dimension(807, 581));
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações Gerais"));
-        jPanel1.setMaximumSize(new java.awt.Dimension(763, 210));
-        jPanel1.setPreferredSize(new java.awt.Dimension(763, 210));
+        jPanel1.setMaximumSize(new java.awt.Dimension(763, 215));
+        jPanel1.setMinimumSize(new java.awt.Dimension(763, 215));
+        jPanel1.setPreferredSize(new java.awt.Dimension(763, 215));
+        jPanel1.setLayout(null);
 
-        jLabel6.setText("Data");
-
-        try {
-            jTextData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jLabel8.setText("Hora Inicial");
-
-        try {
-            jTextHoraInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jLabel9.setText("Hora Final");
-
-        try {
-            jTextHoraFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jLabel1.setText("Latitude Inicial");
-
-        jLabel2.setText("Longitude Inicial");
+        jPanel5.setLayout(new java.awt.GridBagLayout());
 
         jLabel3.setText("Profundidade");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 18, 0, 0);
+        jPanel5.add(jLabel3, gridBagConstraints);
 
-        jLabel4.setText("Comprimento da Rede");
+        jLabel9.setText("Hora Final");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 18, 0, 0);
+        jPanel5.add(jLabel9, gridBagConstraints);
 
-        jLabel5.setText("Altura da Rede");
-
-        jLabel7.setText("Tamanho da Malha");
-
-        jTextLatitudeInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
-        jTextLatitudeInicial.setText("0");
-
-        jTextLongitudeInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
-        jTextLongitudeInicial.setText("0");
+        jTextHoraFinal.setModel(new javax.swing.SpinnerDateModel());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 22;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 18, 0, 10);
+        jPanel5.add(jTextHoraFinal, gridBagConstraints);
 
         jTextProfundidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
         jTextProfundidade.setText("0");
-
-        jTextComprimentoRede.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
-        jTextComprimentoRede.setText("0");
-
-        jTextAlturaRede.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
-        jTextAlturaRede.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 114;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 18, 0, 10);
+        jPanel5.add(jTextProfundidade, gridBagConstraints);
 
         jTextTamanhoMalha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
         jTextTamanhoMalha.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 114;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 18, 18, 10);
+        jPanel5.add(jTextTamanhoMalha, gridBagConstraints);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextComprimentoRede, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextAlturaRede, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextTamanhoMalha, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel5)
-                        .addGap(66, 66, 66)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(69, 69, 69)
-                        .addComponent(jLabel2)
-                        .addGap(61, 61, 61)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextLatitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextLongitudeInicial))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jTextData, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextHoraInicial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9)
-                            .addComponent(jTextHoraFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(jTextProfundidade))))
-                .addContainerGap(345, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(4, 4, 4)
-                        .addComponent(jTextData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(26, 26, 26))
-                    .addComponent(jTextHoraFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(4, 4, 4)
-                        .addComponent(jTextHoraInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(46, 46, 46))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextLatitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextLongitudeInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextProfundidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextComprimentoRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextAlturaRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextTamanhoMalha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
+        jLabel7.setText("Tamanho da Malha");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 18, 0, 0);
+        jPanel5.add(jLabel7, gridBagConstraints);
+
+        jTextAlturaRede.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextAlturaRede.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 114;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 18, 18, 0);
+        jPanel5.add(jTextAlturaRede, gridBagConstraints);
+
+        jLabel5.setText("Altura da Rede");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 18, 0, 0);
+        jPanel5.add(jLabel5, gridBagConstraints);
+
+        jTextLongitudeInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextLongitudeInicial.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 114;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 18, 0, 0);
+        jPanel5.add(jTextLongitudeInicial, gridBagConstraints);
+
+        jLabel2.setText("Longitude Inicial");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 18, 0, 0);
+        jPanel5.add(jLabel2, gridBagConstraints);
+
+        jTextHoraInicial.setModel(new javax.swing.SpinnerDateModel());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 22;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 18, 0, 0);
+        jPanel5.add(jTextHoraInicial, gridBagConstraints);
+
+        jLabel8.setText("Hora Inicial");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 18, 0, 0);
+        jPanel5.add(jLabel8, gridBagConstraints);
+
+        jLabel6.setText("Data");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        jPanel5.add(jLabel6, gridBagConstraints);
+
+        jTextData.setModel(new javax.swing.SpinnerDateModel());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 22;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 10, 0, 0);
+        jPanel5.add(jTextData, gridBagConstraints);
+
+        jLabel1.setText("Latitude Inicial");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        jPanel5.add(jLabel1, gridBagConstraints);
+
+        jTextLatitudeInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextLatitudeInicial.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 114;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 10, 0, 0);
+        jPanel5.add(jTextLatitudeInicial, gridBagConstraints);
+
+        jLabel4.setText("Comprimento da Rede");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        jPanel5.add(jLabel4, gridBagConstraints);
+
+        jTextComprimentoRede.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jTextComprimentoRede.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 114;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 10, 18, 0);
+        jPanel5.add(jTextComprimentoRede, gridBagConstraints);
+
+        jPanel1.add(jPanel5);
+        jPanel5.setBounds(6, 16, 416, 192);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -306,7 +381,7 @@ public class CadastroLance extends javax.swing.JFrame {
                 .addComponent(jButtonInserirCaptura)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonRemoverCaptura)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.WEST);
@@ -318,23 +393,22 @@ public class CadastroLance extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
-        if (valida()) {
-            try {
+        try {
+            if (valida()) {
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                java.util.Date data_formatada;
-                
+
                 //Formata data
-                data_formatada = formato.parse(jTextData.getText());
+                java.util.Date data_formatada = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextData.getModel()));
                 java.sql.Date sql = new java.sql.Date(data_formatada.getTime());
 
                 //Formata hora
                 formato = new SimpleDateFormat("HH:mm");
-                java.util.Date hora = formato.parse(jTextHoraInicial.getText());
+                java.util.Date hora = formato.parse(Funcoes.horaSQL((SpinnerDateModel) jTextHoraInicial.getModel()));
                 java.sql.Time hora_inicial = new java.sql.Time(hora.getTime());
-                
-                hora = formato.parse(jTextHoraInicial.getText());
+
+                hora = formato.parse(Funcoes.horaSQL((SpinnerDateModel) jTextHoraFinal.getModel()));
                 java.sql.Time hora_final = new java.sql.Time(hora.getTime());
-                
+
                 //Formata casas decimais
                 String latitude = Funcoes.formatarDouble(jTextLatitudeInicial.getText());
                 String longitude = Funcoes.formatarDouble(jTextLongitudeInicial.getText());
@@ -342,7 +416,7 @@ public class CadastroLance extends javax.swing.JFrame {
                 String comprimento_rede = Funcoes.formatarDouble(jTextComprimentoRede.getText());
                 String altura_rede = Funcoes.formatarDouble(jTextAlturaRede.getText());
                 String tamanho_malha = Funcoes.formatarDouble(jTextTamanhoMalha.getText());
-                
+
                 lance.setData(sql);
                 lance.setHora_inicial(hora_inicial);
                 lance.setHora_final(hora_final);
@@ -354,13 +428,65 @@ public class CadastroLance extends javax.swing.JFrame {
                 lance.setTamanho_malha(Double.parseDouble(tamanho_malha));
 
                 dispose();
-            } catch (ParseException ex) {
-                Logger.getLogger(CadastroLance.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao gravar o lance! \nVerifique: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private boolean valida() {
+    private boolean valida() throws Exception {
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date data = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextData.getModel()));
+
+        //Formata hora
+        formato = new SimpleDateFormat("HH:mm");
+        java.util.Date hora = formato.parse(Funcoes.horaSQL((SpinnerDateModel) jTextHoraInicial.getModel()));
+        java.sql.Time hora_inicial = new java.sql.Time(hora.getTime());
+
+        hora = formato.parse(Funcoes.horaSQL((SpinnerDateModel) jTextHoraFinal.getModel()));
+        java.sql.Time hora_final = new java.sql.Time(hora.getTime());
+
+        if ((data.after(data_chegada_viagem)) || (data.before(data_saida_viagem))) {
+            jTextData.setFocusable(true);
+            throw new Exception("A data deve estar entre a data de saída e a data de chegada da viagem.");
+        }
+        
+        if (hora_inicial.after(hora_final)){
+            jTextHoraFinal.setFocusable(true);
+            throw new Exception("A hora final deve ser posterior à hora inicial.");
+        }
+
+        if ((Double.parseDouble(Funcoes.formatarDouble(jTextLatitudeInicial.getText())) < -90) || (Double.parseDouble(Funcoes.formatarDouble(jTextLatitudeInicial.getText())) > 90)) {
+            jTextLatitudeInicial.setFocusable(true);
+            throw new Exception("Latitude deve estar entre -90° e 90°.");
+        }
+
+        if ((Double.parseDouble(Funcoes.formatarDouble(jTextLongitudeInicial.getText())) < 0) || (Double.parseDouble(Funcoes.formatarDouble(jTextLongitudeInicial.getText())) > 180)) {
+            jTextLongitudeInicial.setFocusable(true);
+            throw new Exception("Longitude deve estar entre 0° e 180°.");
+        }
+
+        if (Double.parseDouble(Funcoes.formatarDouble(jTextProfundidade.getText())) <= 0) {
+            jTextProfundidade.setFocusable(true);
+            throw new Exception("Profundidade deve ser maior que zero.");
+        }
+
+        if (Double.parseDouble(Funcoes.formatarDouble(jTextComprimentoRede.getText())) <= 0) {
+            jTextComprimentoRede.setFocusable(true);
+            throw new Exception("Comprimento da rede deve ser maior que zero.");
+        }
+
+        if (Double.parseDouble(Funcoes.formatarDouble(jTextAlturaRede.getText())) <= 0) {
+            jTextAlturaRede.setFocusable(true);
+            throw new Exception("Tamanho da rede deve ser maior que zero.");
+        }
+
+        if (Double.parseDouble(Funcoes.formatarDouble(jTextTamanhoMalha.getText())) <= 0) {
+            jTextTamanhoMalha.setFocusable(true);
+            throw new Exception("Tamanho da malha deve ser maior que zero.");
+        }
+
         return true;
     }
 
@@ -406,7 +532,7 @@ public class CadastroLance extends javax.swing.JFrame {
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btCancelarActionPerformed
-   
+
     /**
      * @param args the command line arguments
      */
@@ -468,7 +594,7 @@ public class CadastroLance extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroLance().setVisible(true);
+                //new CadastroLance().setVisible(true);
             }
         });
     }
@@ -491,13 +617,14 @@ public class CadastroLance extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCapturas;
     private javax.swing.JFormattedTextField jTextAlturaRede;
     private javax.swing.JFormattedTextField jTextComprimentoRede;
-    private javax.swing.JFormattedTextField jTextData;
-    private javax.swing.JFormattedTextField jTextHoraFinal;
-    private javax.swing.JFormattedTextField jTextHoraInicial;
+    private javax.swing.JSpinner jTextData;
+    private javax.swing.JSpinner jTextHoraFinal;
+    private javax.swing.JSpinner jTextHoraInicial;
     private javax.swing.JFormattedTextField jTextLatitudeInicial;
     private javax.swing.JFormattedTextField jTextLongitudeInicial;
     private javax.swing.JFormattedTextField jTextProfundidade;

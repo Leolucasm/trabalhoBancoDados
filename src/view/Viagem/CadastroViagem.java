@@ -6,16 +6,14 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableModel;
 import model.Lance;
-import model.Porto;
 import model.Viagem;
 
 public class CadastroViagem extends javax.swing.JFrame {
@@ -39,8 +37,10 @@ public class CadastroViagem extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBoxEmbarcacao = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -48,9 +48,9 @@ public class CadastroViagem extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jComboBoxPortoChegada = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jTextDataSaida = new javax.swing.JFormattedTextField();
-        jTextDataChegada = new javax.swing.JFormattedTextField();
+        jTextDataSaida = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
+        jTextDataChegada = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -63,8 +63,17 @@ public class CadastroViagem extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Viagem");
+        setMaximumSize(new java.awt.Dimension(807, 707));
+        setMinimumSize(new java.awt.Dimension(807, 707));
+        setPreferredSize(new java.awt.Dimension(807, 707));
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações Gerais"));
+        jPanel1.setPreferredSize(new java.awt.Dimension(695, 235));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel5.setMaximumSize(new java.awt.Dimension(342, 192));
+        jPanel5.setMinimumSize(new java.awt.Dimension(342, 192));
 
         jLabel1.setText("Embarcação");
 
@@ -80,74 +89,61 @@ public class CadastroViagem extends javax.swing.JFrame {
 
         jLabel6.setText("Data de Saída");
 
-        try {
-            jTextDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jTextDataSaida.setToolTipText("");
-
-        try {
-            jTextDataChegada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        jTextDataSaida.setModel(new javax.swing.SpinnerDateModel());
 
         jLabel7.setText("Data de Chegada");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jTextDataChegada.setModel(new javax.swing.SpinnerDateModel());
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBoxEmbarcacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBoxPortoSaida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jTextDataSaida, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextDataChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7))))
-                        .addGap(0, 2, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jComboBoxPortoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxEmbarcacao, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxPortoSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxPortoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jTextDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(jTextDataChegada, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(382, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(jComboBoxEmbarcacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxPortoSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxPortoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel4)
+                .addGap(3, 3, 3)
+                .addComponent(jComboBoxPortoSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel5)
+                .addGap(3, 3, 3)
+                .addComponent(jComboBoxPortoChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(1, 1, 1)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextDataChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 36, Short.MAX_VALUE))
         );
+
+        jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -163,6 +159,11 @@ public class CadastroViagem extends javax.swing.JFrame {
 
         btCancelar.setText("Cancelar");
         btCancelar.setToolTipText("");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btCancelar);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -236,7 +237,7 @@ public class CadastroViagem extends javax.swing.JFrame {
                 .addComponent(jButtonInserirFotografia)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonRemoverFotografia)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.WEST);
@@ -262,21 +263,18 @@ public class CadastroViagem extends javax.swing.JFrame {
 
                 model = Funcoes.getEmbarcacoes("nome = '" + jComboBoxEmbarcacao.getItemAt(jComboBoxEmbarcacao.getSelectedIndex()) + "'");
                 int embarcacao = Integer.parseInt((String) model.getValueAt(0, 0));
-                
+
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 java.util.Date data_formatada;
-                
-                
+
                 /*--------------------------------------------------------------
                                 Formatando as Datas
                 --------------------------------------------------------------*/
-                
-                data_formatada = formato.parse(jTextDataSaida.getText());
+                data_formatada = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextDataSaida.getModel()));
                 java.sql.Date data_saida = new java.sql.Date(data_formatada.getTime());
-                
-                data_formatada = formato.parse(jTextDataChegada.getText());
-                java.sql.Date data_chegada = new java.sql.Date(data_formatada.getTime());                                
-                
+
+                data_formatada = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextDataChegada.getModel()));
+                java.sql.Date data_chegada = new java.sql.Date(data_formatada.getTime());
 
                 viagem.setEmbarcacao_id(embarcacao);
                 viagem.setId_porto_saida(porto_saida);
@@ -293,7 +291,23 @@ public class CadastroViagem extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private boolean valida() {
+    private boolean valida() throws Exception {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date data_saida = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextDataSaida.getModel()));
+        java.util.Date data_chegada = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextDataChegada.getModel()));
+
+        if (data_chegada.before(data_saida)) {
+            throw new Exception("A data de chegada deve ser posterior à de saída.");
+        }
+
+        if (jComboBoxPortoSaida.getSelectedIndex() == jComboBoxPortoChegada.getSelectedIndex()) {
+            throw new Exception("Porto de saída e chegada devem ser diferentes.");
+        }
+
+        if (viagem.getQuantidadeLances() <= 0) {
+            throw new Exception("Ao menos um lance deve ser cadastrado.");
+        }
+
         return true;
     }
 
@@ -305,26 +319,34 @@ public class CadastroViagem extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableLancesMouseClicked
 
     private void jButtonInserirFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInserirFotografiaActionPerformed
-        CadastroLance cadastroLance = new CadastroLance();
-        cadastroLance.setVisible(true);
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date data_saida = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextDataSaida.getModel()));
+            java.util.Date data_chegada = formato.parse(Funcoes.dataSQL((SpinnerDateModel) jTextDataChegada.getModel()));
 
-        cadastroLance.addWindowListener(new WindowAdapter() {
+            CadastroLance cadastroLance = new CadastroLance(data_saida, data_chegada);
+            cadastroLance.setVisible(true);
 
-            @Override
-            public void windowClosed(WindowEvent we) {
-                Lance lance = cadastroLance.getLance();
+            cadastroLance.addWindowListener(new WindowAdapter() {
 
-                if (lance.getAltura_rede() > 0) {
-                    viagem.inserirLances(lance);
+                @Override
+                public void windowClosed(WindowEvent we) {
+                    Lance lance = cadastroLance.getLance();
 
-                    //Insere na lista
-                    DefaultTableModel model = (DefaultTableModel) jTableLances.getModel();
-                    model.addRow(new Object[]{lance.getData(), lance.getHora_inicial(), lance.getHora_final(), lance.getQuantidadeCapturas()});
-                    jTableLances.setModel(model);
+                    if (lance.getAltura_rede() > 0) {
+                        viagem.inserirLances(lance);
+
+                        //Insere na lista
+                        DefaultTableModel model = (DefaultTableModel) jTableLances.getModel();
+                        model.addRow(new Object[]{Funcoes.formataData(lance.getData()), lance.getHora_inicial(), lance.getHora_final(), lance.getQuantidadeCapturas()});
+                        jTableLances.setModel(model);
+                    }
                 }
-            }
 
-        });
+            });
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "Verifique se as datas de saída e chegada estão preenchidas corretamente!");
+        }
     }//GEN-LAST:event_jButtonInserirFotografiaActionPerformed
 
     private void jButtonRemoverFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverFotografiaActionPerformed
@@ -333,6 +355,10 @@ public class CadastroViagem extends javax.swing.JFrame {
         model.removeRow(jTableLances.getSelectedRow());
         jTableLances.setModel(model);
     }//GEN-LAST:event_jButtonRemoverFotografiaActionPerformed
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     private void montaCampos() {
         try {
@@ -350,12 +376,27 @@ public class CadastroViagem extends javax.swing.JFrame {
                 jComboBoxPortoSaida.addItem((String) model_portos.getValueAt(i, 1));
                 jComboBoxPortoChegada.addItem((String) model_portos.getValueAt(i, 1));
             }
+
+            JSpinner.DateEditor data_saida_editor = new JSpinner.DateEditor(jTextDataSaida, "dd/MM/yyyy");
+            jTextDataSaida.setEditor(data_saida_editor);
+
+            JSpinner.DateEditor data_chegada_editor = new JSpinner.DateEditor(jTextDataChegada, "dd/MM/yyyy");
+            jTextDataChegada.setEditor(data_chegada_editor);
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar as informações! \nVerifique: " + ex.getMessage());
         }
     }
 
     private void limparCampos() {
+        montaCampos();
+
+        DefaultTableModel model = (DefaultTableModel) jTableLances.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.removeRow(0);
+        }        
+        jTableLances.setModel(model);
+
     }
 
     /**
@@ -425,9 +466,10 @@ public class CadastroViagem extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableLances;
-    private javax.swing.JFormattedTextField jTextDataChegada;
-    private javax.swing.JFormattedTextField jTextDataSaida;
+    private javax.swing.JSpinner jTextDataChegada;
+    private javax.swing.JSpinner jTextDataSaida;
     // End of variables declaration//GEN-END:variables
 }

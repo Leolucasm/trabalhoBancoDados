@@ -61,6 +61,10 @@ public class Viagem {
     public int getId_porto_saida() {
         return id_porto_saida;
     }
+    
+    public int getQuantidadeLances(){
+        return this.lances.size();
+    }
 
     private boolean valida() {
         return true;

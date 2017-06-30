@@ -42,6 +42,7 @@ public class CadastroCaptura extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Captura");
+        setResizable(false);
 
         jLabel1.setText("Espécie");
 
