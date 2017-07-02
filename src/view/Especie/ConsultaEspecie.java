@@ -1,7 +1,6 @@
 package view.Especie;
 
 import view.Porto.*;
-import view.Porto.*;
 import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;

@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import view.Especie.ConsultaEspecie;
+import view.Informacoes.ExibeInfo;
 import view.Porto.ConsultaPortos;
 import view.Viagem.ConsultaViagem;
 
@@ -102,6 +103,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoSobre.png"))); // NOI18N
         jButton6.setText("Informações");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton6);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -136,6 +142,11 @@ public class Principal extends javax.swing.JFrame {
         ConsultaViagem consultaViagem = new ConsultaViagem();
         consultaViagem.show();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        ExibeInfo exibeInfo = new ExibeInfo();
+        exibeInfo.show();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
