@@ -1,15 +1,15 @@
 package view.Especie;
 
+import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import model.Especie;
 import model.Fotografia;
-import model.Porto;
 
 public class CadastroEspecie extends javax.swing.JFrame {
 
@@ -19,10 +19,8 @@ public class CadastroEspecie extends javax.swing.JFrame {
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
         
-        SpinnerNumberModel model_max = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1);        
-        SpinnerNumberModel model_min = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1);        
-        jSpinnerProfundidadeMinima.setModel(model_min); 
-        jSpinnerProfundidadeMaxima.setModel(model_max);
+        jSpinnerProfundidadeMinima.setValue(0.00000);
+        jSpinnerProfundidadeMaxima.setValue(0.00000);
     }
 
     /**
@@ -38,21 +36,21 @@ public class CadastroEspecie extends javax.swing.JFrame {
         jTextNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jSpinnerProfundidadeMinima = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
-        jSpinnerProfundidadeMaxima = new javax.swing.JSpinner();
+        jSpinnerProfundidadeMaxima = new javax.swing.JFormattedTextField();
+        jSpinnerProfundidadeMinima = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableProdutos = new javax.swing.JTable();
+        jTableFotografias = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jButtonInserirFotografia = new javax.swing.JButton();
         jButtonRemoverFotografia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de Porto");
+        setTitle("Cadastro de Espécie");
 
         jTextNome.setToolTipText("");
 
@@ -61,6 +59,12 @@ public class CadastroEspecie extends javax.swing.JFrame {
         jLabel2.setText("Profundidade Mínima");
 
         jLabel4.setText("Profundidade Máxima");
+
+        jSpinnerProfundidadeMaxima.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jSpinnerProfundidadeMaxima.setText("0");
+
+        jSpinnerProfundidadeMinima.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jSpinnerProfundidadeMinima.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,10 +78,10 @@ public class CadastroEspecie extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jSpinnerProfundidadeMinima, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
-                            .addComponent(jSpinnerProfundidadeMaxima, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 452, Short.MAX_VALUE)))
+                            .addComponent(jSpinnerProfundidadeMinima, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSpinnerProfundidadeMaxima, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 463, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -93,9 +97,9 @@ public class CadastroEspecie extends javax.swing.JFrame {
                 .addComponent(jSpinnerProfundidadeMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSpinnerProfundidadeMaxima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -124,7 +128,7 @@ public class CadastroEspecie extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Fotografias"));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
+        jTableFotografias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -147,12 +151,12 @@ public class CadastroEspecie extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTableProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableFotografias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableProdutosMouseClicked(evt);
+                jTableFotografiasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTableProdutos);
+        jScrollPane1.setViewportView(jTableFotografias);
 
         jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -203,48 +207,68 @@ public class CadastroEspecie extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         try {
-            Especie especie = new Especie();
-            especie.setNome(jTextNome.getText());
-            especie.setProfundidade_minima((double) jSpinnerProfundidadeMinima.getValue());
-            especie.setProfundidade_maxima((double) jSpinnerProfundidadeMaxima.getValue());
+            if (valida()) {
+                Especie especie = new Especie();
+                especie.setNome(jTextNome.getText());
+                especie.setProfundidade_minima(Double.parseDouble(Funcoes.formatarDouble(jSpinnerProfundidadeMinima.getText())));
+                especie.setProfundidade_maxima(Double.parseDouble(Funcoes.formatarDouble(jSpinnerProfundidadeMaxima.getText())));
 
-            DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();
+                DefaultTableModel model = (DefaultTableModel) jTableFotografias.getModel();
 
-            for (int i = 0; i < model.getRowCount(); i++) {
-                especie.inserirFotografia(new Fotografia((String) model.getValueAt(i, 0)));
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    especie.inserirFotografia(new Fotografia((String) model.getValueAt(i, 0)));
+                }
+
+                especie.save();
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Espécie cadastrada com sucesso!");
             }
-            
-            especie.save();
-            limparCampos();
-            JOptionPane.showMessageDialog(null, "Espécie cadastrada com sucesso!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private void jTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutosMouseClicked
+    private boolean valida() throws Exception {
+        if (Funcoes.registroExiste("especie", "nome", jTextNome.getText())) {
+            throw new Exception("Já existe uma espécie cadastrada com esse nome.");
+        }
+        if (Double.parseDouble(Funcoes.formatarDouble(jSpinnerProfundidadeMinima.getText())) <= 0.00000){
+            throw new Exception("Profundidade mínima não informada.");
+        }
+        if (Double.parseDouble(Funcoes.formatarDouble(jSpinnerProfundidadeMaxima.getText())) <= 0.00000){
+            throw new Exception("Profundidade máxima não informada.");
+        }
+        return true;
+    }
+
+    private void jTableFotografiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableFotografiasMouseClicked
 
         if (evt.getClickCount() == 2) {
             //
         }
-    }//GEN-LAST:event_jTableProdutosMouseClicked
+    }//GEN-LAST:event_jTableFotografiasMouseClicked
 
     private void jButtonInserirFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInserirFotografiaActionPerformed
         //Seleciona Arquivo
-        JFileChooser jFile = new JFileChooser();
-        jFile.showOpenDialog(getParent());
-        String arquivo = jFile.getSelectedFile().getAbsolutePath();
-
-        //Insere na lista
-        DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();
-        model.addRow(new Object[]{arquivo});
-        jTableProdutos.setModel(model);
+        JFileChooser chooser = new JFileChooser();  //Cria uma instância do JFileChooser
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "JPG & GIF Images", "jpg", "gif");  //Cria um filtro
+        chooser.setFileFilter(filter);  //Altera o filtro do JFileChooser
+        int returnVal = chooser.showOpenDialog(chooser); //Abre o diálogo JFileChooser
+        if (returnVal == JFileChooser.APPROVE_OPTION) {  //Verifica se o usuário clicou no botão OK
+            String arquivo = chooser.getSelectedFile().getAbsolutePath();
+            
+            //Insere na lista
+            DefaultTableModel model = (DefaultTableModel) jTableFotografias.getModel();
+            model.addRow(new Object[]{arquivo});
+            jTableFotografias.setModel(model);
+        }               
     }//GEN-LAST:event_jButtonInserirFotografiaActionPerformed
 
     private void jButtonRemoverFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverFotografiaActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();
-        model.removeRow(jTableProdutos.getSelectedRow());
-        jTableProdutos.setModel(model);
+        DefaultTableModel model = (DefaultTableModel) jTableFotografias.getModel();
+        model.removeRow(jTableFotografias.getSelectedRow());
+        jTableFotografias.setModel(model);
     }//GEN-LAST:event_jButtonRemoverFotografiaActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
@@ -253,7 +277,8 @@ public class CadastroEspecie extends javax.swing.JFrame {
 
     private void limparCampos() {
         jTextNome.setText("");
-        jSpinnerProfundidadeMinima.setValue(0.0);
+        jSpinnerProfundidadeMinima.setValue(0.00000);
+        jSpinnerProfundidadeMaxima.setValue(0.00000);
     }
 
     /**
@@ -319,9 +344,9 @@ public class CadastroEspecie extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinnerProfundidadeMaxima;
-    private javax.swing.JSpinner jSpinnerProfundidadeMinima;
-    private javax.swing.JTable jTableProdutos;
+    private javax.swing.JFormattedTextField jSpinnerProfundidadeMaxima;
+    private javax.swing.JFormattedTextField jSpinnerProfundidadeMinima;
+    private javax.swing.JTable jTableFotografias;
     private javax.swing.JTextField jTextNome;
     // End of variables declaration//GEN-END:variables
 }

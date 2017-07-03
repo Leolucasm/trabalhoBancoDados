@@ -5,8 +5,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Reader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ParametrosConexao {
 
@@ -42,13 +41,13 @@ public class ParametrosConexao {
     public void lerArquivoConfiguracao() {
 
         Reader reader;        
-        try {
-            reader = new FileReader(new File(this.getClass().getResource("/arquivos/servidor.json").getFile()));
+        try {                                    
+            reader = new FileReader(new File(this.getClass().getResource("/arquivos/servidor.json").getFile()));            
             Gson gson = new Gson();
             ParametrosConexao parametrosConexao = gson.fromJson(reader, ParametrosConexao.class);
             setParametrosConexao(parametrosConexao.getSERVIDOR(), parametrosConexao.getPORTA(), parametrosConexao.getUSUARIO(), parametrosConexao.getSENHA(), parametrosConexao.getDATABASE());
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ParametrosConexao.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os parâmetros de conexão! \nMensagem: " + ex.getMessage());
         }
     }
 

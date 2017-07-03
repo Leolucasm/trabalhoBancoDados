@@ -1,5 +1,6 @@
 package view.Porto;
 
+import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -13,13 +14,13 @@ public class CadastroPorto extends javax.swing.JFrame {
      * Creates new form CadastroEmbarcacao
      */
     public CadastroPorto() {
-        initComponents();                
+        initComponents();
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
-        this.setIconImage(imagemTitulo);     
-        
-        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 99999, 1);        
-        jSpinnerAnoFundacao.setModel(model); 
+        this.setIconImage(imagemTitulo);
+
+        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 99999, 1);
+        jSpinnerAnoFundacao.setModel(model);
     }
 
     /**
@@ -105,6 +106,11 @@ public class CadastroPorto extends javax.swing.JFrame {
 
         btCancelar.setText("Cancelar");
         btCancelar.setToolTipText("");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btCancelar);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -115,30 +121,46 @@ public class CadastroPorto extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         try {
-            Porto porto = new Porto();
-            porto.setNome(jTextNome.getText());
-            porto.setAno_fundacao((int) jSpinnerAnoFundacao.getValue());
-            
-            if (jComboBoxAdministracao.getSelectedIndex() == 0){
-                porto.setAdministracao(Porto.tipo_administracao.publico);
-            }else {
-                porto.setAdministracao(Porto.tipo_administracao.privativo);
+            if (valida()) {
+                Porto porto = new Porto();
+                porto.setNome(jTextNome.getText().toUpperCase());
+                porto.setAno_fundacao((int) jSpinnerAnoFundacao.getValue());
+
+                if (jComboBoxAdministracao.getSelectedIndex() == 0) {
+                    porto.setAdministracao(Porto.tipo_administracao.publico);
+                } else {
+                    porto.setAdministracao(Porto.tipo_administracao.privativo);
+                }
+
+                porto.save();
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Porto cadastrado com sucesso!");
             }
-            
-            porto.save();
-            limparCampos();
-            JOptionPane.showMessageDialog(null, "Porto cadastrado com sucesso!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private void limparCampos(){
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
+
+    private boolean valida() throws Exception {
+        if (Funcoes.registroExiste("porto", "nome", jTextNome.getText())) {
+            throw new Exception("Já existe um porto cadastrado com esse nome.");
+        }
+        if ((int) jSpinnerAnoFundacao.getValue() <= 0){
+            throw new Exception("O ano de fundação deve ser informado.");
+        }
+        return true;
+    }
+
+    private void limparCampos() {
         jTextNome.setText("");
         jSpinnerAnoFundacao.setValue(0.0);
         jComboBoxAdministracao.setSelectedIndex(0);
     }
-    
+
     /**
      * @param args the command line arguments
      */

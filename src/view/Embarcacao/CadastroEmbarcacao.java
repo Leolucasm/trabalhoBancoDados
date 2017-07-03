@@ -1,12 +1,10 @@
 package view.Embarcacao;
 
+import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
 import model.Embarcacao;
 
 public class CadastroEmbarcacao extends javax.swing.JFrame {
@@ -15,12 +13,12 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
      * Creates new form CadastroEmbarcacao
      */
     public CadastroEmbarcacao() {
-        initComponents();                
+        initComponents();
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
-        SpinnerNumberModel model = new SpinnerNumberModel(0.0, 0.0, 99999.0, 0.1);        
-        jSpinnerTamanho.setModel(model);        
+        
+        jSpinnerTamanho.setValue(0.00000);
     }
 
     /**
@@ -36,7 +34,7 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
         jTextNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jSpinnerTamanho = new javax.swing.JSpinner();
+        jSpinnerTamanho = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         btGravar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -50,6 +48,9 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
 
         jLabel2.setText("Tamanho");
 
+        jSpinnerTamanho.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00000"))));
+        jSpinnerTamanho.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -62,8 +63,8 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jSpinnerTamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 243, Short.MAX_VALUE)))
+                            .addComponent(jSpinnerTamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 254, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,6 +95,11 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
 
         btCancelar.setText("Cancelar");
         btCancelar.setToolTipText("");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btCancelar);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -104,22 +110,38 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
 
     private void btGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGravarActionPerformed
         try {
-            Embarcacao embarcacao = new Embarcacao();
-            embarcacao.setNome(jTextNome.getText());
-            embarcacao.setTamanho((double) jSpinnerTamanho.getValue());
-            embarcacao.save();            
-            limparCampos();
-            JOptionPane.showMessageDialog(null, "Embarcação Cadastrada com sucesso!");
+            if (valida()) {
+                Embarcacao embarcacao = new Embarcacao();
+                embarcacao.setNome(jTextNome.getText().toUpperCase());
+                embarcacao.setTamanho(Double.parseDouble(Funcoes.formatarDouble(jSpinnerTamanho.getText())));
+                embarcacao.save();
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Embarcação Cadastrada com sucesso!");
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
         }
     }//GEN-LAST:event_btGravarActionPerformed
 
-    private void limparCampos(){
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
+
+    private boolean valida() throws Exception {
+        if (Funcoes.registroExiste("embarcacao", "nome", jTextNome.getText())) {
+            throw new Exception("Já existe uma embarcação cadastrada com esse nome.");
+        }
+        if(Double.parseDouble(Funcoes.formatarDouble(jSpinnerTamanho.getText())) <= 0.00000){
+            throw new Exception("O tamanho da embarcação deve ser maior que zero.");
+        }
+        return true;
+    }
+
+    private void limparCampos() {
         jTextNome.setText("");
         jSpinnerTamanho.setValue(0.0);
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -162,7 +184,7 @@ public class CadastroEmbarcacao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JSpinner jSpinnerTamanho;
+    private javax.swing.JFormattedTextField jSpinnerTamanho;
     private javax.swing.JTextField jTextNome;
     // End of variables declaration//GEN-END:variables
 }

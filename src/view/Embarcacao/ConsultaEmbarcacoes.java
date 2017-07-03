@@ -3,10 +3,13 @@ package view.Embarcacao;
 import control.Funcoes;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class ConsultaEmbarcacoes extends javax.swing.JFrame {
@@ -170,13 +173,23 @@ public class ConsultaEmbarcacoes extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();
         String codigoEmbarcacao = model.getValueAt(jTableProdutos.getSelectedRow(), 0).toString();
-        Funcoes.excluirRegistro("embarcacao", codigoEmbarcacao);
+        try {
+            Funcoes.excluirRegistro("embarcacao", codigoEmbarcacao);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Houve um erro ao excluir o registro! \nVerifique a mensagem: " + ex.getMessage());
+        }
         realizarConsulta();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncluirActionPerformed
         CadastroEmbarcacao cadastroEmbarcacao = new CadastroEmbarcacao();
         cadastroEmbarcacao.show();
+        cadastroEmbarcacao.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent we) {
+                realizarConsulta();
+            }
+        });
     }//GEN-LAST:event_btIncluirActionPerformed
 
     private void realizarConsulta() {        
@@ -189,7 +202,7 @@ public class ConsultaEmbarcacoes extends javax.swing.JFrame {
             if (!comandoWhere.equals("")) {
                 comandoWhere = comandoWhere + "AND ";
             }
-            comandoWhere = comandoWhere + "nome like '%" + jTextFieldNome.getText() + "%'";            
+            comandoWhere = comandoWhere + "upper(nome) like upper('%" + jTextFieldNome.getText() + "%')";            
         }
         try {
             jTableProdutos.setModel(Funcoes.getEmbarcacoes(comandoWhere));
