@@ -138,7 +138,38 @@ public class Funcoes {
             }
         };
     }
+    
+    public static DefaultTableModel getRelat1(String filtros) throws SQLException {
+        String sql;
+        String[] headers = {"Mês", "Ano", "Número de Viagens", "Número de embarcações", "Total Capturado"};
+        String[][] dados;
 
+        sql = "SELECT to_char(data_saida,'Mon') as mon, "             
+                + "extract(year from data_saida), "
+                + "(select COUNT(data_saida) from viagem), "
+                + "(select SUM(embarcacao_id) from viagem), "
+                + "(select COUNT(data_saida) from viagem) "
+                + "from "
+                + "viagem v "
+                + "left join embarcacao e on (v.embarcacao_id = e.id) "
+                + "left join porto s on (v.id_porto_saida = s.id) "
+                + "left join porto c on (v.id_porto_chegada = c.id) ";
+
+        if (!filtros.equals("")) {
+            sql = sql + " WHERE " + filtros;
+        }              
+        
+        sql = sql + "";        
+        dados = gerenciadorDeDados.getDadosTabela(sql);
+       
+        DefaultTableModel model;
+        return new DefaultTableModel(dados, headers) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
+    
     public static void excluirRegistro(String tabela, String id) throws SQLException {
         
         gerenciadorDeDados.conecta();

@@ -6,6 +6,9 @@
 package view.Relatorio;
 
 import control.Funcoes;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,8 +23,12 @@ public class GeraRelatorio extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public GeraRelatorio() {
+    public GeraRelatorio() throws SQLException {
         initComponents();
+        URL url = this.getClass().getResource("/arquivos/Icone.jpg");
+        Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
+        this.setIconImage(imagemTitulo);
+        realizarConsulta();
     }
     
     
@@ -186,7 +193,11 @@ public class GeraRelatorio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GeraRelatorio().setVisible(true);
+                try {
+                    new GeraRelatorio().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GeraRelatorio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -200,4 +211,8 @@ public class GeraRelatorio extends javax.swing.JFrame {
     private javax.swing.JTable jTableAtividadeMes;
     private javax.swing.JTable jTableEmbarcacaoMes;
     // End of variables declaration//GEN-END:variables
+
+    private void realizarConsulta() throws SQLException {
+        jTableAtividadeMes.setModel(Funcoes.getRelat1(""));
+    }
 }
