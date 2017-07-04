@@ -22,7 +22,6 @@ public class GeraRelatorio extends javax.swing.JFrame {
      */
     public GeraRelatorio() {
         initComponents();
-        realizarConsulta();
     }
     
     
@@ -190,17 +189,6 @@ public class GeraRelatorio extends javax.swing.JFrame {
                 new GeraRelatorio().setVisible(true);
             }
         });
-    }
-
-   private void realizarConsulta() {        
-
-       
-       
-        try {
-            jTableAtividadeMes.setModel(Funcoes.getAny("id","viagem","order by id"));
-        } catch (SQLException ex) {
-            Logger.getLogger(ConsultaEmbarcacoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
