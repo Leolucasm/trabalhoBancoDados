@@ -12,7 +12,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import view.Embarcacao.ConsultaEmbarcacoes;
 
 /**
  *
@@ -28,7 +27,6 @@ public class GeraRelatorio extends javax.swing.JFrame {
         URL url = this.getClass().getResource("/arquivos/Icone.jpg");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
-        realizarConsulta();
     }
     
     
@@ -48,8 +46,7 @@ public class GeraRelatorio extends javax.swing.JFrame {
         jTableEmbarcacaoMes = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTableAtividadeEspecie = new javax.swing.JTable();
-
-        setPreferredSize(new java.awt.Dimension(800, 900));
+        jButton1 = new javax.swing.JButton();
 
         jTableAtividadeMes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,6 +132,13 @@ public class GeraRelatorio extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Resumo de Atividades por Espécie", jScrollPane4);
 
+        jButton1.setText("Gerar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,18 +147,32 @@ public class GeraRelatorio extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(364, 364, 364)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 878, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 856, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(4, 4, 4))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            realizarConsulta();
+        } catch (SQLException ex) {
+            Logger.getLogger(GeraRelatorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,6 +221,7 @@ public class GeraRelatorio extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -214,5 +233,7 @@ public class GeraRelatorio extends javax.swing.JFrame {
 
     private void realizarConsulta() throws SQLException {
         jTableAtividadeMes.setModel(Funcoes.getRelat1(""));
+        jTableEmbarcacaoMes.setModel(Funcoes.getRelat2(""));
+        jTableAtividadeEspecie.setModel(Funcoes.getRelat3(""));
     }
 }

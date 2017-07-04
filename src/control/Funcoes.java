@@ -147,8 +147,8 @@ public class Funcoes {
         sql = "SELECT to_char(data_saida,'Mon') as mon, "             
                 + "extract(year from data_saida), "
                 + "(select COUNT(data_saida) from viagem), "
-                + "(select SUM(embarcacao_id) from viagem), "
-                + "(select COUNT(data_saida) from viagem) "
+                + "(select COUNT(embarcacao_id) from viagem group by embarcacao_id), "
+                + "(select count(c.*) from viagem v left join lance l on (l.viagem_id = v.id) left join captura c on (c.lance_id = l.id) group by v.id) "
                 + "from "
                 + "viagem v "
                 + "left join embarcacao e on (v.embarcacao_id = e.id) "
@@ -169,6 +169,68 @@ public class Funcoes {
             }
         };
     }
+    
+    public static DefaultTableModel getRelat2(String filtros) throws SQLException {
+        String sql;
+        String[] headers = {"Mês", "Ano", "Nome da Embarcação", "Número de viagens", "Total Capturado"};
+        String[][] dados;
+
+        sql = "SELECT to_char(data_saida,'Mon') as mon, "             
+                + "extract(year from data_saida), "
+                + "(select COUNT(data_saida) from viagem), "
+                + "(select COUNT(embarcacao_id) from viagem group by embarcacao_id), "
+                + "(select count(c.*) from viagem v left join lance l on (l.viagem_id = v.id) left join captura c on (c.lance_id = l.id) group by v.id) "
+                + "from "
+                + "viagem v "
+                + "left join embarcacao e on (v.embarcacao_id = e.id) "
+                + "left join porto s on (v.id_porto_saida = s.id) "
+                + "left join porto c on (v.id_porto_chegada = c.id) ";
+
+        if (!filtros.equals("")) {
+            sql = sql + " WHERE " + filtros;
+        }              
+        
+        sql = sql + "";        
+        dados = gerenciadorDeDados.getDadosTabela(sql);
+       
+        DefaultTableModel model;
+        return new DefaultTableModel(dados, headers) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }
+        
+    public static DefaultTableModel getRelat3(String filtros) throws SQLException {
+        String sql;
+        String[] headers = {"Mês", "Ano", "Espécie", "Total Capturado"};
+        String[][] dados;
+
+        sql = "SELECT to_char(data_saida,'Mon') as mon, "             
+                + "extract(year from data_saida), "
+                + "(select COUNT(data_saida) from viagem), "
+                + "(select SUM(embarcacao_id) from viagem), "
+                + "(select count(c.*) from viagem v left join lance l on (l.viagem_id = v.id) left join captura c on (c.lance_id = l.id) left join especie e on (e.id = c.especie_id) group by e.nome) "
+                + "from "
+                + "viagem v "
+                + "left join embarcacao e on (v.embarcacao_id = e.id) "
+                + "left join porto s on (v.id_porto_saida = s.id) "
+                + "left join porto c on (v.id_porto_chegada = c.id) ";
+
+        if (!filtros.equals("")) {
+            sql = sql + " WHERE " + filtros;
+        }              
+        
+        sql = sql + "";        
+        dados = gerenciadorDeDados.getDadosTabela(sql);
+       
+        DefaultTableModel model;
+        return new DefaultTableModel(dados, headers) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+    }    
     
     public static void excluirRegistro(String tabela, String id) throws SQLException {
         
