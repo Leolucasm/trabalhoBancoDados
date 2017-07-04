@@ -7,10 +7,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import view.Especie.ConsultaEspecie;
 import view.Informacoes.ExibeInfo;
 import view.Porto.ConsultaPortos;
+import view.Relatorio.GeraRelatorio;
 import view.Viagem.ConsultaViagem;
 
 public class Principal extends javax.swing.JFrame {
@@ -25,13 +27,13 @@ public class Principal extends javax.swing.JFrame {
         }
         initComponents();
 
-        URL url = this.getClass().getResource("/arquivos/Icone.jpg");
+        URL url = this.getClass().getResource("/arquivos/Icone.jpg");        
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
         Image imagemTituloJanela = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/arquivos/PlanoFundo.jpg"));
         jLabel1.setIcon(new ImageIcon(imagemTituloJanela.getScaledInstance(jPanel2.getWidth(), jPanel2.getHeight(), Image.SCALE_DEFAULT)));
         setExtendedState(MAXIMIZED_BOTH);
-    }
+    }       
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,6 +101,11 @@ public class Principal extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(240, 213, 168));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoRelatorios.png"))); // NOI18N
         jButton5.setText("Relatórios");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivos/botaoSobre.png"))); // NOI18N
@@ -125,28 +132,33 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ConsultaEmbarcacoes consultaEmbarcacoes = new ConsultaEmbarcacoes();
-        consultaEmbarcacoes.show();
+        consultaEmbarcacoes.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ConsultaPortos consultaPortos = new ConsultaPortos();
-        consultaPortos.show();
+        consultaPortos.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ConsultaEspecie consultaEspecie = new ConsultaEspecie();
-        consultaEspecie.show();
+        consultaEspecie.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         ConsultaViagem consultaViagem = new ConsultaViagem();
-        consultaViagem.show();
+        consultaViagem.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         ExibeInfo exibeInfo = new ExibeInfo();
-        exibeInfo.show();
+        exibeInfo.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        GeraRelatorio geraRelatorio = new GeraRelatorio();
+        geraRelatorio.show();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

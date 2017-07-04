@@ -287,7 +287,7 @@ public class CadastroLance extends javax.swing.JFrame {
         jPanel5.add(jTextComprimentoRede, gridBagConstraints);
 
         jPanel1.add(jPanel5);
-        jPanel5.setBounds(6, 16, 416, 192);
+        jPanel5.setBounds(6, 16, 434, 192);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 

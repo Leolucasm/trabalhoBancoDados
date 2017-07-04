@@ -46,7 +46,7 @@ public class Funcoes {
                 return false;
             }
         };
-    }
+    }        
 
     public static DefaultTableModel getEspecies(String filtros) throws SQLException {
         String sql;
@@ -95,7 +95,7 @@ public class Funcoes {
         for (int i = 0; i < dados.length; i++) {
             if (dados[i][2].equals("PUB")) {
                 dados[i][2] = "Pública";
-            } else {
+            } else if (dados[i][2].equals("PRI")){
                 dados[i][2] = "Privada";
             }
         }
@@ -130,14 +130,7 @@ public class Funcoes {
         
         sql = sql + " order by v.id";        
         dados = gerenciadorDeDados.getDadosTabela(sql);
-
-        for (int i = 0; i < dados.length; i++) {
-            if (dados[i][2].equals("PUB")) {
-                dados[i][2] = "Pública";
-            } else {
-                dados[i][2] = "Privada";
-            }
-        }
+       
         DefaultTableModel model;
         return new DefaultTableModel(dados, headers) {
             public boolean isCellEditable(int row, int column) {
@@ -145,15 +138,49 @@ public class Funcoes {
             }
         };
     }
-
+<<<<<<< HEAD
+    
+    public static DefaultTableModel getAny (String coluna, String table, String orderby) throws SQLException {
+        String sql;
+        
+        sql = "SELECT " + coluna + " from " + table + " " + orderby;
+        return new DefaultTableModel(gerenciadorDeDados.getDadosTabela(sql),0);
+    }
+    
     public static void excluirRegistro(String tabela, String id) {
         gerenciadorDeDados.executarComando("delete from " + tabela + " where id = " + id);
+=======
+
+    public static void excluirRegistro(String tabela, String id) throws SQLException {
+        
+        gerenciadorDeDados.conecta();
+        gerenciadorDeDados.executar("BEGIN");
+        
+        if (tabela.equals("viagem")){            
+            gerenciadorDeDados.executar("DELETE from captura using lance WHERE  lance.viagem_id = " + id + " AND captura.lance_id = lance.id");
+            gerenciadorDeDados.executar("DELETE from lance WHERE lance.viagem_id = " + id);
+        }         
+        gerenciadorDeDados.executar("delete from " + tabela + " where id = " + id);
+        
+        gerenciadorDeDados.executar("COMMIT");
+        gerenciadorDeDados.desconecta();
+>>>>>>> 88f2f34c21a0046844b3d61950d0f944767aeb50
     }
 
     public static String formatarDouble(String valor) {
         valor = valor.replace(".", "");
         valor = valor.replace(",", ".");
         return valor;
+    }
+    
+    public static boolean registroExiste(String tabela, String campo, String valor_campo) throws SQLException{
+        String sql;        
+        String[][] dados;
+
+        sql = "SELECT id from " + tabela + " where upper(" + campo + ") = upper('" + valor_campo + "')";                
+        dados = gerenciadorDeDados.getDadosTabela(sql);
+        
+        return !(dados[0][0].equals(" "));
     }
     
     public static String dataSQL(SpinnerDateModel model){        

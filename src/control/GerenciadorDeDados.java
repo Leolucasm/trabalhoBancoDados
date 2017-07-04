@@ -87,7 +87,7 @@ public class GerenciadorDeDados {
     /**
      * @param comando SQL contendo o comando para ser executado.
      */
-    public void executarComando(String comando) {
+    public void executarComando(String comando) throws SQLException {
         conecta();
         executar(comando);
         desconecta();
@@ -96,13 +96,9 @@ public class GerenciadorDeDados {
     /**
      * @param comando SQL contendo o comando para ser executado.
      */
-    public void executar(String comando) {
-        try {
+    public void executar(String comando) throws SQLException {        
             Statement st = conexao.createStatement();
-            st.executeUpdate(comando);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Houve um erro ao executar o comando! \n Mensagem: " + ex.getMessage());
-        }
+            st.executeUpdate(comando);        
     }
 
     public int getLastID(String comando) throws SQLException {
