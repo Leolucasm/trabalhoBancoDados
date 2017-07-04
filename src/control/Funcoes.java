@@ -139,6 +139,7 @@ public class Funcoes {
         };
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     
     public static DefaultTableModel getAny (String coluna, String table, String orderby) throws SQLException {
         String sql;
@@ -150,6 +151,8 @@ public class Funcoes {
     public static void excluirRegistro(String tabela, String id) {
         gerenciadorDeDados.executarComando("delete from " + tabela + " where id = " + id);
 =======
+=======
+>>>>>>> 88f2f34c21a0046844b3d61950d0f944767aeb50
 
     public static void excluirRegistro(String tabela, String id) throws SQLException {
         
@@ -164,6 +167,9 @@ public class Funcoes {
         
         gerenciadorDeDados.executar("COMMIT");
         gerenciadorDeDados.desconecta();
+<<<<<<< HEAD
+>>>>>>> 88f2f34c21a0046844b3d61950d0f944767aeb50
+=======
 >>>>>>> 88f2f34c21a0046844b3d61950d0f944767aeb50
     }
 
